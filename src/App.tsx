@@ -1,10 +1,12 @@
 import './App.css'
+import Login from './components/Login/Login'
+import Signup from './components/Signup/Signup'
 
 function App() {
 
   return (
     <>
-      <img src="/media/tariq/D/Blogs-App/server/src/uploads/2023-08-19T14:24:11.748Zexpress.png" alt="Express" />
+      <Signup/>
     </>
   )
 }
