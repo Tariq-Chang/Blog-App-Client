@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import blogIcon from '../../images/blogger.png'
+import blogIcon from '../../assets/images/blogger.png'
 import { ChangeEvent, useState } from 'react'
 import { User } from '../../interfaces/User'
 import { useLoginMutation } from '../../hooks/useLoginMutation'

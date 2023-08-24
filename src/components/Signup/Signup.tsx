@@ -1,5 +1,5 @@
 import { ChangeEvent, useState } from 'react'
-import blogIcon from '../../images/blogger.png'
+import blogIcon from '../../assets/images/blogger.png'
 import { User } from '../../interfaces/User'
 
 import { Link } from 'react-router-dom'
