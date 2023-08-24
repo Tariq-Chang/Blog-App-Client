@@ -6,11 +6,10 @@ import Sidebar from '../components/Sidebar/Sidebar'
 const Router = () => {
   return (
     <div>
-      <Sidebar/>
       <Routes>
         <Route path="/login" element={<Login/>} />
         <Route path="/register" element={<Signup/>} />
-        {/* <Route path="/dashboard" element={<Sidebar/>} /> */}
+        <Route path="/dashboard" element={<Sidebar/>} />
       </Routes>
     </div>
   )

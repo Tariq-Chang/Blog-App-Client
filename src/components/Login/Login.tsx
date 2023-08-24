@@ -1,11 +1,21 @@
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import blogIcon from '../../assets/images/blogger.png'
-import { ChangeEvent, useState } from 'react'
+import { ChangeEvent, useEffect, useState } from 'react'
 import { User } from '../../interfaces/User'
+import Cookies from 'js-cookie'
 import { useLoginMutation } from '../../hooks/useLoginMutation'
 function Login() {
   const [loginData, setLoginData] = useState<User>({})
   const loginMutation = useLoginMutation();
+  const navigate = useNavigate();
+  
+  useEffect(() => {
+    const token = Cookies.get('jwtToken');
+
+    if(token){
+      navigate('/dashboard');
+    }
+  },[])
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setLoginData((prev) => {
