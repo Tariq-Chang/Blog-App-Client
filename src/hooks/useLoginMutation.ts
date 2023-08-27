@@ -11,7 +11,7 @@ export const useLoginMutation = () => {
         onSuccess: (data) => {
             const token = data.token.split(' ')[1];
             console.log(token);
-            Cookies.set('jwtToken', token, {expires:60});
+            Cookies.set('jwtToken', token, {expires:0.1, secure:true});
             navigate('/dashboard');
         }
     })
