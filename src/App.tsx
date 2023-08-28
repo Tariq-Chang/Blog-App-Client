@@ -19,9 +19,10 @@ function App() {
   }, [])
   return (
     <>
-    <div className='flex'>
-      <Sidebar />
-      <Search/>
+    <div>
+      <Router/>
+      {/* <Sidebar /> */}
+      {/* <Search/> */}
     </div>
     </>
   )
