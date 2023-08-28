@@ -1,27 +1,30 @@
-import { ChangeEvent, useState } from 'react'
-import blogIcon from '../../assets/images/blogger.png'
-import { User } from '../../interfaces/User'
+import { ChangeEvent, useState } from "react";
+import blogIcon from "../../assets/images/blogger.png";
+import { User } from "../../interfaces/User";
+import userIcon from "../../assets/images/user.png";
+import emailICon from "../../assets/images/email.png";
+import lockIcon from "../../assets/images/lock.png";
 
-import { Link } from 'react-router-dom'
-import { useRegisterMutation} from '../../hooks/useRegisterMutation'
+import { Link } from "react-router-dom";
+import { useRegisterMutation } from "../../hooks/useRegisterMutation";
 
 function Signup() {
-    const [userData, setUserData] = useState<User>({})
-    const registerMutation = useRegisterMutation();
+  const [userData, setUserData] = useState<User>({});
+  const registerMutation = useRegisterMutation();
 
-    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-        setUserData((prev) => {
-            return {...prev, [e.target.name]: e.target.value}
-        })
-    }
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setUserData((prev) => {
+      return { ...prev, [e.target.name]: e.target.value };
+    });
+  };
 
-    const handleSubmit = (e:React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        registerMutation.mutate(userData);
-    }
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    registerMutation.mutate(userData);
+  };
   return (
     <>
-    <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
+      <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
           <img
             className="mx-auto h-[80px] w-auto"
@@ -34,12 +37,20 @@ function Signup() {
         </div>
 
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-          <form className="space-y-6" action="#" method="POST" onSubmit={handleSubmit}>
-          <div>
-              <label htmlFor="username" className="block text-sm font-medium leading-6 text-gray-900">
+          <form
+            className="space-y-6"
+            action="#"
+            method="POST"
+            onSubmit={handleSubmit}
+          >
+            <div>
+              <label
+                htmlFor="username"
+                className="block text-sm font-medium leading-6 text-gray-900"
+              >
                 Username
               </label>
-              <div className="mt-2">
+              <div className="mt-2 relative">
                 <input
                   id="username"
                   name="username"
@@ -50,14 +61,22 @@ function Signup() {
                   required
                   className="block w-full rounded-md border-0 py-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
+                <img
+                  src={userIcon}
+                  alt="user"
+                  className="absolute right-3 top-4 h-5 flex items-center"
+                />
               </div>
             </div>
-            
+
             <div>
-              <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
+              <label
+                htmlFor="email"
+                className="block text-sm font-medium leading-6 text-gray-900"
+              >
                 Email address
               </label>
-              <div className="mt-2">
+              <div className="mt-2 relative">
                 <input
                   id="email"
                   name="email"
@@ -65,25 +84,35 @@ function Signup() {
                   placeholder="example@email.com"
                   autoComplete="email"
                   onChange={handleChange}
-
                   required
                   className="block w-full rounded-md border-0 py-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                />
+                <img
+                  src={emailICon}
+                  alt="user"
+                  className="absolute right-3 top-4 h-5 flex items-center"
                 />
               </div>
             </div>
 
             <div>
               <div className="flex items-center justify-between">
-                <label htmlFor="password" className="block text-sm font-medium leading-6 text-gray-900">
+                <label
+                  htmlFor="password"
+                  className="block text-sm font-medium leading-6 text-gray-900"
+                >
                   Password
                 </label>
                 <div className="text-sm">
-                  <a href="#" className="font-semibold text-indigo-600 hover:text-indigo-500">
+                  <a
+                    href="#"
+                    className="font-semibold text-indigo-600 hover:text-indigo-500"
+                  >
                     Forgot password?
                   </a>
                 </div>
               </div>
-              <div className="mt-2">
+              <div className="mt-2 relative">
                 <input
                   id="password"
                   name="password"
@@ -93,6 +122,11 @@ function Signup() {
                   onChange={handleChange}
                   required
                   className="block w-full rounded-md border-0 py-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                />
+                <img
+                  src={lockIcon}
+                  alt="user"
+                  className="absolute right-3 top-4 h-5 flex items-center"
                 />
               </div>
             </div>
@@ -108,15 +142,18 @@ function Signup() {
           </form>
 
           <p className="mt-10 text-center text-sm text-gray-500">
-            Already have an account?{' '}
-            <Link to="/login" className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">
+            Already have an account?{" "}
+            <Link
+              to="/login"
+              className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
+            >
               Sign in
             </Link>
           </p>
         </div>
       </div>
     </>
-  )
+  );
 }
 
-export default Signup
+export default Signup;
