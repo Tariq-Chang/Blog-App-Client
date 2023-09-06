@@ -12,14 +12,14 @@ function Sidebar() {
         navigate('/login');
     }
     return (
-        <div className="flex h-screen w-32 flex-col justify-between border-e bg-white">
+        <div className="flex h-screen w-20 flex-col justify-between border-e bg-white">
             <div>
-                <div className="inline-flex h-32 w-32 items-center justify-center">
-                    <span
-                        className="grid h-10 w-10 place-content-center rounded-lg bg-gray-100 text-xs text-gray-600"
-                    >
-                        <img src={blogLogo} alt="" className='blog__logo' />
-                    </span>
+                <div className="flex h-20 w-20 items-center justify-center mt-6">
+                    {/* <span
+                        className="grid h-8 w-8 place-content-center rounded-lg bg-gray-100 text-xs text-gray-600"
+                    > */}
+                        <img src={blogLogo} alt="" className="blog__logo" />
+                    {/* </span> */}
                 </div>
 
                 <div className="">
