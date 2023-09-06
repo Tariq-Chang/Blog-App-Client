@@ -2,10 +2,15 @@ import blogLogo from '../../assets/images/blogger.png'
 import homeIcon from '../../assets/images/home.png'
 import writeIcon from '../../assets/images/write.png';
 import logoutIcon from '../../assets/images/logout.png'
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie'
 
 function Sidebar() {
+    const navigate = useNavigate();
+    const handleLogout = () => {
+        Cookies.remove('jwtToken')
+        navigate('/login');
+    }
     return (
         <div className="flex h-screen w-32 flex-col justify-between border-e bg-white">
             <div>
@@ -22,7 +27,7 @@ function Sidebar() {
                         <ul className="space-y-4 pt-12">
                             <li>
                                 <Link
-                                    to='/blogs'
+                                    to='blogs'
                                     className="group relative flex justify-center rounded px-2 py-1.5 text-gray-500 hover:bg-gray-200 hover:text-gray-700"
                                 >
                                     <img src={homeIcon} alt="home" className='h-8 w-8' />
@@ -56,7 +61,7 @@ function Sidebar() {
                 <form action="/logout">
                     <button
                         type="submit"
-                        onClick={() => Cookies.remove('jwtToken')}
+                        onClick={handleLogout}
                         className="group relative flex w-full justify-center rounded-lg px-2 py-1.5 text-sm text-gray-500 hover:bg-gray-50 hover:text-gray-700"
 
                     >

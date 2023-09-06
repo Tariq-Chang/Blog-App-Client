@@ -1,19 +1,30 @@
-import { Route, Routes } from 'react-router-dom'
+import { Route, Routes, createBrowserRouter } from 'react-router-dom'
 import Login from '../components/Login/Login'
 import Signup from '../components/Signup/Signup'
 import Sidebar from '../components/Sidebar/Sidebar'
 import App from '../App'
 
-const Router = () => {
-  return (
-    <div>
-      <Routes>
-        <Route path="/login" element={<Login/>} />
-        <Route path="/register" element={<Signup/>} />
-        <Route path="/dashboard" element={<App/>} />
-      </Routes>
-    </div>
-  )
-}
-
-export default Router
+export const router = createBrowserRouter([
+  {
+    path: '/login',
+    element: <Login/>
+  },
+  {
+    path: '/register',
+    element: <Signup/>
+  },
+  {
+    path: '/dashboard',
+    element: <App/>,
+    children: [
+      {
+        path: 'blogs',
+        element: <h1>All Blogs</h1>
+      },
+      {
+        path: 'users',
+        element: <h1>Users</h1>
+      }
+    ]
+  }
+])

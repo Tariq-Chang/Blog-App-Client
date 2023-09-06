@@ -1,11 +1,9 @@
-import { useNavigate } from 'react-router-dom'
+import { Outlet, useNavigate } from 'react-router-dom'
 import './App.css'
-import Router from './routes/Router'
-import { useCallback, useEffect } from 'react'
+import { useEffect } from 'react'
 import Cookies from 'js-cookie'
-import { useGetBlogsMutation } from './hooks/useGetBlogsMutation'
-import Search from './components/Search/Search'
 import Sidebar from './components/Sidebar/Sidebar'
+import Search from './components/Search/Search'
 function App() {
   const navigate = useNavigate();
   // const getBlogsMutation = useGetBlogsMutation();
@@ -19,11 +17,15 @@ function App() {
   }, [])
   return (
     <>
-    <div>
-      <Router/>
-      {/* <Sidebar /> */}
-      {/* <Search/> */}
-    </div>
+      <div className='flex'>
+        <div className="flex">
+          <Sidebar />
+        </div>
+        <div className="flex flex-col flex-[0.8]">
+          <Search />
+          <Outlet />
+        </div>
+      </div>
     </>
   )
 }
