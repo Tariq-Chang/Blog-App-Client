@@ -22,7 +22,7 @@ function Sidebar() {
                     </span>
                 </div>
 
-                <div className="border-t border-gray-100">
+                <div className="">
                     <div className="px-2">
                         <ul className="space-y-4 pt-12">
                             <li>

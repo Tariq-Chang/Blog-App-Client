@@ -1,7 +1,7 @@
 import { Route, Routes, createBrowserRouter } from 'react-router-dom'
 import Login from '../components/Login/Login'
 import Signup from '../components/Signup/Signup'
-import Sidebar from '../components/Sidebar/Sidebar'
+import Sidebar from '../layout/Sidebar/Sidebar'
 import App from '../App'
 
 export const router = createBrowserRouter([
