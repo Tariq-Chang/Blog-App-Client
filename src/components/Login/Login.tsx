@@ -4,8 +4,8 @@ import { ChangeEvent, useEffect, useState } from "react";
 import { User } from "../../interfaces/User";
 import Cookies from "js-cookie";
 import { useLoginMutation } from "../../hooks/useLoginMutation";
-import emailICon from "../../assets/images/email.png";
-import lockIcon from "../../assets/images/lock.png";
+import {BiSolidLockAlt} from 'react-icons/bi'
+import {MdEmail} from 'react-icons/md';
 function Login() {
   const [loginData, setLoginData] = useState<User>({});
   const loginMutation = useLoginMutation();
@@ -68,11 +68,9 @@ function Login() {
                   onChange={handleChange}
                   className="block w-full rounded-md border-0 py-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
-                <img
-                  src={emailICon}
-                  alt="user"
-                  className="absolute right-3 top-4 h-5 flex items-center"
-                />
+                  
+                <MdEmail className="absolute right-3 top-4 h-5 w-8 flex items-center text-gray-700"/>
+                
               </div>
             </div>
 
@@ -104,11 +102,8 @@ function Login() {
                   onChange={handleChange}
                   className="block w-full rounded-md border-0 py-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
-                <img
-                  src={lockIcon}
-                  alt="user"
-                  className="absolute right-3 top-4 h-5 flex items-center"
-                />
+                <BiSolidLockAlt className="absolute right-3 top-4 h-5 w-8 flex items-center text-gray-700"/>
+                
               </div>
             </div>
 

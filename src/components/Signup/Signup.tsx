@@ -1,12 +1,12 @@
 import { ChangeEvent, useState } from "react";
 import blogIcon from "../../assets/images/blogger.png";
 import { User } from "../../interfaces/User";
-import userIcon from "../../assets/images/user.png";
-import emailICon from "../../assets/images/email.png";
-import lockIcon from "../../assets/images/lock.png";
 
+import {MdEmail} from 'react-icons/md';
 import { Link } from "react-router-dom";
 import { useRegisterMutation } from "../../hooks/useRegisterMutation";
+import { BiSolidLockAlt } from "react-icons/bi";
+import {FaUserAlt} from 'react-icons/fa';
 
 function Signup() {
   const [userData, setUserData] = useState<User>({});
@@ -61,11 +61,7 @@ function Signup() {
                   required
                   className="block w-full rounded-md border-0 py-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
-                <img
-                  src={userIcon}
-                  alt="user"
-                  className="absolute right-3 top-4 h-5 flex items-center"
-                />
+                <FaUserAlt className="absolute right-3 top-4 h-5 w-8 flex items-center text-gray-700"/>
               </div>
             </div>
 
@@ -87,11 +83,8 @@ function Signup() {
                   required
                   className="block w-full rounded-md border-0 py-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
-                <img
-                  src={emailICon}
-                  alt="user"
-                  className="absolute right-3 top-4 h-5 flex items-center"
-                />
+                <MdEmail className="absolute right-3 top-4 h-5 w-8 flex items-center text-gray-700"/>
+                
               </div>
             </div>
 
@@ -123,11 +116,8 @@ function Signup() {
                   required
                   className="block w-full rounded-md border-0 py-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
-                <img
-                  src={lockIcon}
-                  alt="user"
-                  className="absolute right-3 top-4 h-5 flex items-center"
-                />
+                <BiSolidLockAlt className="absolute right-3 top-4 h-5 w-8 flex items-center text-gray-700"/>
+                
               </div>
             </div>
 

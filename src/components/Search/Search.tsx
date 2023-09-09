@@ -3,7 +3,6 @@ import SearchIcon from '@mui/icons-material/Search';
 
 export default function Search() {
     return (
-        <div className="p-8">
             <div className="relative mt-2 rounded-md shadow-sm max-w-[500px]">
                 <input
                     type="text"
@@ -16,7 +15,6 @@ export default function Search() {
                     <SearchIcon />
                 </button>
             </div>
-        </div>
     )
 }
 

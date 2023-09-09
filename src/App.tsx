@@ -21,9 +21,11 @@ function App() {
         <div className="flex">
           <Sidebar />
         </div>
-        <div className="flex flex-col flex-[0.6]">
+        <div className="flex flex-col flex-[0.6] ml-4">
           <Header />
-          <Outlet />
+          <span className='p-4 ml-4 border-t'>
+            <Outlet />
+          </span>
         </div>
       </div>
     </>
