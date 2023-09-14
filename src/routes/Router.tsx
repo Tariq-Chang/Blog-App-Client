@@ -3,7 +3,8 @@ import Login from '../pages/Login/Login'
 import Signup from '../pages/Signup/Signup'
 import Sidebar from '../layout/Sidebar/Sidebar'
 import App from '../App'
-
+import { Dashboard } from '@mui/icons-material'
+import Card from '../components/Card/Card'
 export const router = createBrowserRouter([
   {
     path: '/login',
@@ -19,7 +20,7 @@ export const router = createBrowserRouter([
     children: [
       {
         path: 'blogs',
-        element: <h1>All Blogs</h1>
+        element: <Card/>
       },
       {
         path: 'users',

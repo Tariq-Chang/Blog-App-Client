@@ -5,22 +5,26 @@ import {IoCreateOutline} from 'react-icons/io5'
 import { IoLogOutOutline } from 'react-icons/io5'
 import { Link, useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie'
+import { useDispatch } from 'react-redux'
+import { logout } from '../../redux/features/userSlice'
 
 
 function Sidebar() {
     const navigate = useNavigate();
+    const dispatch = useDispatch();
     const handleLogout = () => {
         Cookies.remove('jwtToken')
+        dispatch(logout())
         navigate('/login');
     }
     return (
-        <div className="flex h-screen w-20 flex-col justify-between border-e bg-white">
+        <div className="flex h-screen w-20 flex-col justify-between border-r bg-white">
             <div>
                 <div className="flex h-20 w-20 items-center justify-center mt-6">
                     <img src={blogLogo} alt="" className="blog__logo" />
                 </div>
 
-                <div className="">
+                <div >
                     <div className="px-2">
                         <ul className="space-y-4 pt-12">
                             <li>

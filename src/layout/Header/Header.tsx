@@ -9,7 +9,7 @@ function Header() {
     setShowNotifications(!showNofications)
   }
   return (
-    <div className="flex justify-between items-center mt-10 ml-4 mb-4">
+    <div className="flex justify-between items-center mt-10 mx-6 mb-4">
       <Search />
       <div className="flex gap-x-4 items-end">
         <div className="relative">

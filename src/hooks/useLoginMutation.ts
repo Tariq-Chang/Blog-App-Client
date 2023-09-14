@@ -3,16 +3,24 @@ import { login } from "../api/userApi/userApi";
 import { User } from "../interfaces/User";
 import { useNavigate } from "react-router-dom";
 import Cookies from 'js-cookie';
+import { useDispatch } from "react-redux";
+import { setCurrentUser } from "../redux/features/userSlice";
 export const useLoginMutation = () => {
     const queryClient = useQueryClient();
     const navigate = useNavigate()
+    const dispatch = useDispatch();
 
     return useMutation((credentials:User) => login(credentials), {
         onSuccess: (data) => {
+            console.log("data",data);
             const token = data.token.split(' ')[1];
             console.log(token);
-            Cookies.set('jwtToken', token, {expires:0.1, secure:true});
+            Cookies.set('jwtToken', token, {expires:10, secure:true});
+            dispatch(setCurrentUser(data.user))
             navigate('/dashboard');
+        },
+        onError: (error) => {
+            throw error;
         }
     })
 }
