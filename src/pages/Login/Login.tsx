@@ -12,8 +12,13 @@ import {
 } from "../../validations/loginValidation";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { setCurrentUser } from "../../redux/features/userSlice";
+import { useDispatch } from "react-redux";
+import { HashLoader } from "react-spinners";
 
 function Login() {
+  const dispatch = useDispatch();
+  const [loading, setLoading] = useState<boolean>(false);
   const {
     register,
     handleSubmit,
@@ -24,7 +29,6 @@ function Login() {
   const [loginError, setLoginError] = useState<string>();
   const loginMutation = useLoginMutation();
   const navigate = useNavigate();
-  console.log(errors);
   useEffect(() => {
     const token = Cookies.get("jwtToken");
 
@@ -39,20 +43,37 @@ function Login() {
   //   });
   // };
 
-  const onSubmit: SubmitHandler<loginSchemaType> = async(data) => {
-    console.log(data);
-    console.log(loginMutation.isError);
+  const onSubmit: SubmitHandler<loginSchemaType> = async (data) => {
     try {
-      loginMutation.mutate(data);      
-    } catch (error) {
-        if (loginMutation.isError && data.email && data.password) {
-        setLoginError("User is not authenticated");
+      setLoading(true);
+      const { data: userData, error } = await loginMutation.mutateAsync(data);
+      console.log(userData);
+      if (error) {
+        setLoginError("User does not exist");
+        return;
+      } else {
+        const token = userData.token.split(" ")[1];
+        console.log(token);
+        Cookies.set("jwtToken", token, { expires: 10, secure: true });
+        dispatch(setCurrentUser(userData.user));
+        navigate("/dashboard");
       }
+      console.log("loginError", loginError);
+    } catch (error) {
+      setLoginError("User does not exist");
+      console.log("catch", error);
+    } finally {
+      setLoading(false);
     }
   };
   return (
     <>
-      <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
+          {loading && (
+            <div className="z-10 fixed inset-0 flex items-center justify-center ">
+              <HashLoader color="#141414" size={80} />
+            </div>
+          )}
+      <div className="flex min-h-full flex-1 flex-col justify-center backdrop-blur-md backdrop-opacity-50 px-6 py-12 lg:px-8 ">
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
           <img
             className="mx-auto h-[80px] w-auto"

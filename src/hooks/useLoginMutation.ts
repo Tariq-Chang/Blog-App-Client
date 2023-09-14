@@ -10,17 +10,5 @@ export const useLoginMutation = () => {
     const navigate = useNavigate()
     const dispatch = useDispatch();
 
-    return useMutation((credentials:User) => login(credentials), {
-        onSuccess: (data) => {
-            console.log("data",data);
-            const token = data.token.split(' ')[1];
-            console.log(token);
-            Cookies.set('jwtToken', token, {expires:10, secure:true});
-            dispatch(setCurrentUser(data.user))
-            navigate('/dashboard');
-        },
-        onError: (error) => {
-            throw error;
-        }
-    })
+    return useMutation((credentials:User) => login(credentials))
 }
