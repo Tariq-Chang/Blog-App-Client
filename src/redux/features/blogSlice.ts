@@ -13,7 +13,10 @@ const blogSlice = createSlice({
     reducers: {
       setBlogs: (state, action) => {
         state.blogs = action.payload
-      }   
+      },   
+      logout: (state) => {
+        state.blogs = []
+      }
     }
 })
 
