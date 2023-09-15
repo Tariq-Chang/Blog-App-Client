@@ -29,8 +29,8 @@ function SidebarRight() {
           alt="User dropdown"
           onClick={handleShowAvatarOptions}
         />
-        <div className="px-2">
-          <p className="mb-0 font-medium">{user.username}</p>
+        <div className="px-2 flex flex-col">
+          <small className="mb-0 font-bold" style={{fontSize:"14px"}}>{user.username}</small>
           <small>{user.email}</small>
         </div>
       </div>
