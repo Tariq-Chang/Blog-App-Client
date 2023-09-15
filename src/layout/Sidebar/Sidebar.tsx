@@ -1,5 +1,4 @@
 import blogLogo from '../../assets/images/blogger.png'
-import logoutIcon from '../../assets/images/logout.png'
 import {GoHomeFill} from 'react-icons/go'
 import {IoCreateOutline} from 'react-icons/io5'
 import { IoLogOutOutline } from 'react-icons/io5'

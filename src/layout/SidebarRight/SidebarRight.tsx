@@ -9,7 +9,6 @@ function SidebarRight() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const user: User = useSelector((state: any) => state.user.activeUser);
-  console.log(user);
 
   const handleShowAvatarOptions = () => {
     setShowAvatarOptions(!showAvatarOptions);

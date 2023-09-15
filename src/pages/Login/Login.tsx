@@ -15,6 +15,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { setCurrentUser } from "../../redux/features/userSlice";
 import { useDispatch } from "react-redux";
 import { HashLoader } from "react-spinners";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function Login() {
   const dispatch = useDispatch();
@@ -26,7 +28,7 @@ function Login() {
   } = useForm<loginSchemaType>({
     resolver: zodResolver(loginSchema),
   });
-  const [loginError, setLoginError] = useState<string>();
+  const [loginError, setLoginError] = useState<boolean>();
   const loginMutation = useLoginMutation();
   const navigate = useNavigate();
   useEffect(() => {
@@ -46,33 +48,42 @@ function Login() {
   const onSubmit: SubmitHandler<loginSchemaType> = async (data) => {
     try {
       setLoading(true);
-      const { data: userData, error } = await loginMutation.mutateAsync(data);
-      console.log(userData);
-      if (error) {
-        setLoginError("User does not exist");
-        return;
-      } else {
-        const token = userData.token.split(" ")[1];
-        console.log(token);
-        Cookies.set("jwtToken", token, { expires: 10, secure: true });
-        dispatch(setCurrentUser(userData.user));
-        navigate("/dashboard");
-      }
-      console.log("loginError", loginError);
+      const userData = await loginMutation.mutateAsync(data);
+
+      // storing token in in cookies
+      const token = userData.token.split(" ")[1];
+      Cookies.set("jwtToken", token, { expires: 10, secure: true });
+
+      // storing user in redux store
+      dispatch(setCurrentUser(userData.user));
+
+      // navigate to the dashboard
+      navigate("/dashboard");
     } catch (error) {
-      setLoginError("User does not exist");
-      console.log("catch", error);
+      // if login fails
+      setLoginError(true);
+
+      toast.error("Invalid credentials!", {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+      });
     } finally {
       setLoading(false);
     }
   };
   return (
     <>
-          {loading && (
-            <div className="z-10 fixed inset-0 flex items-center justify-center ">
-              <HashLoader color="#141414" size={80} />
-            </div>
-          )}
+      {loading && (
+        <div className="z-10 fixed inset-0 flex items-center justify-center ">
+          <HashLoader color="#141414" size={80} />
+        </div>
+      )}
       <div className="flex min-h-full flex-1 flex-col justify-center backdrop-blur-md backdrop-opacity-50 px-6 py-12 lg:px-8 ">
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
           <img
@@ -84,12 +95,17 @@ function Login() {
             Sign in to your account
           </h2>
         </div>
-        {loginError && (
-          <div className="bg-red-400 pb-2 mt-2 w-[400px] m-auto rounded-md">
-            <p className="text-red-700 text-center mt-2">User does not exist</p>
-          </div>
-        )}
-
+        <ToastContainer
+          position="top-center"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="dark"
+        />
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
           <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
             <div>
