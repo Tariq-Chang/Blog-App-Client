@@ -1,29 +1,68 @@
 import { ChangeEvent, useState } from "react";
 import blogIcon from "../../assets/images/blogger.png";
-import { User } from "../../interfaces/User";
 
 import {MdEmail} from 'react-icons/md';
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useRegisterMutation } from "../../hooks/useRegisterMutation";
 import { BiSolidLockAlt } from "react-icons/bi";
 import {FaUserAlt} from 'react-icons/fa';
+import { SubmitHandler, useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { registerSchema, registerSchemaType } from "../../validations/registerValidation";
+import { ToastContainer, toast } from "react-toastify";
+import { HashLoader } from "react-spinners";
+import "react-toastify/dist/ReactToastify.css";
 
 function Signup() {
-  const [userData, setUserData] = useState<User>({});
+  const {
+    register,
+    handleSubmit,
+    formState: {errors, isSubmitting}
+  } = useForm<registerSchemaType>({resolver: zodResolver(registerSchema)})
   const registerMutation = useRegisterMutation();
+  const [loading, setLoading] = useState<boolean>(false);
+  const navigate = useNavigate()
+  console.log("errors",errors)
+  const onSubmit:SubmitHandler<registerSchemaType> = async(data) => {
+    try {
+      setLoading(true);
+      const userData = await registerMutation.mutateAsync(data);
+      console.log("userData", userData)
+      toast.success("User registered successfully", {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+      });
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setUserData((prev) => {
-      return { ...prev, [e.target.name]: e.target.value };
-    });
-  };
+      setTimeout(() => navigate('/login'),5000)
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    registerMutation.mutate(userData);
+    } catch (error) {
+      toast.error("Invalid credentials!", {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+      });
+    } finally {
+      setLoading(false);
+    }
   };
   return (
     <>
+    {loading && (
+        <div className="z-10 fixed inset-0 flex items-center justify-center ">
+          <HashLoader color="#141414" size={80} />
+        </div>
+      )}
       <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
           <img
@@ -35,13 +74,22 @@ function Signup() {
             Sign up to create an account
           </h2>
         </div>
-
+        <ToastContainer
+          position="top-center"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="dark"
+        />
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
           <form
             className="space-y-6"
-            action="#"
-            method="POST"
-            onSubmit={handleSubmit}
+            
+            onSubmit={handleSubmit(onSubmit)}
           >
             <div>
               <label
@@ -53,15 +101,19 @@ function Signup() {
               <div className="mt-2 relative">
                 <input
                   id="username"
-                  name="username"
                   type="text"
                   placeholder="John Doe"
-                  autoComplete="username"
-                  onChange={handleChange}
-                  required
+                  autoComplete="off"
+                  // required
                   className="block w-full rounded-md border-0 py-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  {...register("username")}
                 />
                 <FaUserAlt className="absolute right-3 top-4 h-5 w-8 flex items-center text-gray-700"/>
+                {errors.username && (
+                  <span className="text-red-800 block mt-2">
+                    {errors.username?.message}
+                  </span>
+                )}
               </div>
             </div>
 
@@ -75,16 +127,19 @@ function Signup() {
               <div className="mt-2 relative">
                 <input
                   id="email"
-                  name="email"
                   type="email"
                   placeholder="example@email.com"
-                  autoComplete="email"
-                  onChange={handleChange}
-                  required
+                  autoComplete="off"
+                  // required
                   className="block w-full rounded-md border-0 py-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  {...register("email")}
                 />
                 <MdEmail className="absolute right-3 top-4 h-5 w-8 flex items-center text-gray-700"/>
-                
+                {errors.email && (
+                  <span className="text-red-800 block mt-2">
+                    {errors.email?.message}
+                  </span>
+                )}
               </div>
             </div>
 
@@ -108,16 +163,19 @@ function Signup() {
               <div className="mt-2 relative">
                 <input
                   id="password"
-                  name="password"
                   type="password"
                   placeholder="******"
-                  autoComplete="current-password"
-                  onChange={handleChange}
-                  required
+                  autoComplete="off"
+                  // required
                   className="block w-full rounded-md border-0 py-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                />
+                  {...register('password')}
+                  />
                 <BiSolidLockAlt className="absolute right-3 top-4 h-5 w-8 flex items-center text-gray-700"/>
-                
+                {errors.password && (
+                  <span className="text-red-800 block mt-2">
+                    {errors.password?.message}
+                  </span>
+                )}
               </div>
             </div>
 
