@@ -3,7 +3,7 @@ import { User } from "../../interfaces/User";
 import { useState } from "react";
 import Cookies from "js-cookie";
 import { logout } from "../../redux/features/userSlice";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 function SidebarRight() {
   const [showAvatarOptions, setShowAvatarOptions] = useState<boolean>(false);
   const dispatch = useDispatch();
@@ -22,15 +22,17 @@ function SidebarRight() {
   return (
     <div className="flex h-screen p-4 mt-8 flex-col  border-l bg-white">
       <div className="flex items-center w-100">
-        <img
-          id="avatarButton"
-          className="w-10 h-10 object-contain rounded-full cursor-pointer"
-          src={user?.profile?.avatar}
-          alt="User dropdown"
-          onClick={handleShowAvatarOptions}
-        />
+          <img
+            id="avatarButton"
+            className="w-10 h-10 object-contain rounded-full cursor-pointer"
+            src={user?.profile?.avatar}
+            alt="User dropdown"
+            onClick={handleShowAvatarOptions}
+          />
         <div className="px-2 flex flex-col">
-          <small className="mb-0 font-bold" style={{fontSize:"14px"}}>{user.username}</small>
+          <small className="mb-0 font-bold" style={{ fontSize: "14px" }}>
+            {user.username}
+          </small>
           <small>{user.email}</small>
         </div>
       </div>
@@ -56,12 +58,11 @@ function SidebarRight() {
             </a>
           </li>
           <li>
-            <a
-              href="#"
+            <Link to='/profile'
               className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
             >
               Settings
-            </a>
+            </Link>
           </li>
         </ul>
         <div className="py-1" onClick={handleLogout}>
