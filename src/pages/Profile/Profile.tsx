@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux";
 import { User } from "../../interfaces/User";
-import { AiOutlineArrowLeft } from "react-icons/ai";
+import { BsArrowLeftSquareFill } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 
 function Profile() {
@@ -10,8 +10,8 @@ function Profile() {
   console.log(user);
   return (
     <div className="w-100">
-      <div className="flex align-items-center ml-8 h-16 text-2xl w-fit cursor-pointer hover:text-gray-700">
-        <AiOutlineArrowLeft
+      <div className="w-[60%] mx-auto h-16 text-2xl cursor-pointer hover:text-gray-700">
+        <BsArrowLeftSquareFill
           onClick={() => navigate(-1)}
           style={{ height: "100%" }}
         />
