@@ -1,0 +1,9 @@
+.grid__container{
+    display:grid;
+    grid-template-columns:repeat(auto-fill, minmax(250px, 1fr));
+    grid-template-rows:auto;
+}
+
+.grid__container *{
+    width:100%;
+}

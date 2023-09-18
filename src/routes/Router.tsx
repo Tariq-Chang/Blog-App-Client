@@ -1,10 +1,10 @@
-import { Route, Routes, createBrowserRouter } from 'react-router-dom'
+import {  createBrowserRouter } from 'react-router-dom'
 import Login from '../pages/Login/Login'
 import Signup from '../pages/Signup/Signup'
-import Sidebar from '../layout/Sidebar/Sidebar'
 import App from '../App'
-import { Dashboard } from '@mui/icons-material'
-import Card from '../components/Card/Card'
+import MyBlogs from '../pages/MyBlogs/MyBlogs'
+import Profile from '../pages/Profile/Profile'
+
 export const router = createBrowserRouter([
   {
     path: '/login',
@@ -20,12 +20,16 @@ export const router = createBrowserRouter([
     children: [
       {
         path: 'blogs',
-        element: <Card/>
+        element: <MyBlogs/>
       },
       {
         path: 'users',
         element: <h1>Users</h1>
       }
     ]
+  },
+  {
+    path: '/profile',
+    element: <Profile/>
   }
 ])
