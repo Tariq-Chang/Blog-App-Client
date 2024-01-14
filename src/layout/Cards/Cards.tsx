@@ -1,17 +1,20 @@
-import { useSelector } from 'react-redux';
 import Card from '../../components/Card/Card'
 import "./Cards.css"
 import { Blog } from '../../interfaces/Blog';
-function Cards() {
-  const blogs = useSelector((state: any) => state.blogs.blogs);
-    console.log("blogs", blogs);
+
+interface CardsProps{
+  blogs: Blog[]
+}
+
+function Cards({ blogs }:CardsProps) {
+  console.log("Blogs",blogs);
   return (
     <div className="grid__container gap-5">
-        {
-            blogs?.map(({title, content, author,thumbnail}:Blog) => {
-                return <Card title={title} content={content} author={author} thumbnail={thumbnail}/>
-            })
-        }
+      {
+        blogs ? (blogs?.map(({ title, content, author, thumbnail }: Blog) => {
+          return <Card title={title} content={content} author={author} thumbnail={thumbnail} />
+        })) : <h1>Blog Not Found</h1>
+      }
     </div>
   )
 }
