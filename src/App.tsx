@@ -15,7 +15,6 @@ function App() {
   const getBlogsMutation = useGetBlogsMutation();
   useEffect(() => {
     
-
     const fetchData = async () => {
       const token = Cookies.get("jwtToken");
       if (!token) {
@@ -24,7 +23,9 @@ function App() {
       const blogData = await getBlogsMutation.mutateAsync();
       dispatch(setBlogs(blogData));
 
-      toast.success("Successful login!", {
+      const isLoggedIn = JSON.parse(localStorage.getItem('isLoggedIn'))
+
+      !isLoggedIn && toast.success("Successful login!", {
         position: "top-center",
         autoClose: 5000,
         hideProgressBar: false,
@@ -34,6 +35,8 @@ function App() {
         progress: undefined,
         theme: "dark",
       });
+
+      localStorage.setItem('isLoggedIn', JSON.stringify(true));
     };
     fetchData();
   }, []);
