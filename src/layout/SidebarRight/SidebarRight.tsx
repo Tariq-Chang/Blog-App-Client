@@ -16,11 +16,12 @@ function SidebarRight() {
 
   const handleLogout = () => {
     Cookies.remove("jwtToken");
+    localStorage.removeItem('isLoggedIn');
     dispatch(logout());
     navigate("/login");
   };
   return (
-    <div className="flex h-screen p-4 mt-8 flex-col  border-l bg-white">
+    <div className="flex h-screen p-4 pt-12 flex-col  border-l bg-white">
       <div className="flex items-center w-100">
           <img
             id="avatarButton"

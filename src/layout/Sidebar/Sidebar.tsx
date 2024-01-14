@@ -13,6 +13,7 @@ function Sidebar() {
     const dispatch = useDispatch();
     const handleLogout = () => {
         Cookies.remove('jwtToken')
+        localStorage.removeItem('isLoggedIn');
         dispatch(logout())
         navigate('/login');
     }
