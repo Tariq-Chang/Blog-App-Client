@@ -21,7 +21,7 @@ function SidebarRight() {
     navigate("/login");
   };
   return (
-    <div className="flex h-screen p-4 pt-12 flex-col  border-l bg-white">
+    <div className="flex h-screen p-4 pt-12 flex-col  border-l bg-white sticky top-0">
       <div className="flex items-center w-100">
           <img
             id="avatarButton"
