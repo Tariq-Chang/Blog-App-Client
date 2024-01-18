@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import Cookies from "js-cookie";
 import Sidebar from "./layout/Sidebar/Sidebar";
 import Header from "./layout/Header/Header";
-import { useGetBlogsMutation } from "./hooks/useGetBlogsMutation";
+import { useGetAllBlogsMutation } from "./hooks/useBlogsMutation";
 import SidebarRight from "./layout/SidebarRight/SidebarRight";
 import { ToastContainer, toast } from "react-toastify";
 import { useDispatch } from "react-redux";
@@ -12,7 +12,7 @@ import { setBlogs } from "./redux/features/blogSlice";
 function App() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const getBlogsMutation = useGetBlogsMutation();
+  const getAllBlogsMutation = useGetAllBlogsMutation();
   useEffect(() => {
     
     const fetchData = async () => {
@@ -20,7 +20,7 @@ function App() {
       if (!token) {
         navigate("/login");
       }
-      const blogData = await getBlogsMutation.mutateAsync();
+      const blogData = await getAllBlogsMutation.mutateAsync();
       dispatch(setBlogs(blogData));
 
       const isLoggedIn = JSON.parse(localStorage.getItem('isLoggedIn') as string)
