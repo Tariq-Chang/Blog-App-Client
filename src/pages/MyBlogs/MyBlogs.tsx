@@ -6,7 +6,7 @@ function MyBlogs() {
     console.log("blogs", blogs);
   return (
     <div>
-        <Cards blogs={blogs}/>
+        {blogs ? <Cards blogs={blogs}/> : <h1>User has not written any Blog</h1>}
     </div>
   )
 }

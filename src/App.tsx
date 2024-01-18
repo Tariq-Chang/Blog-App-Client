@@ -23,7 +23,7 @@ function App() {
       const blogData = await getBlogsMutation.mutateAsync();
       dispatch(setBlogs(blogData));
 
-      const isLoggedIn = JSON.parse(localStorage.getItem('isLoggedIn'))
+      const isLoggedIn = JSON.parse(localStorage.getItem('isLoggedIn') as string)
 
       !isLoggedIn && toast.success("Successful login!", {
         position: "top-center",
