@@ -1,7 +1,7 @@
 import SearchIcon from "@mui/icons-material/Search";
 import React, { useState } from "react";
 import { useSearchBlogByTitle } from "../../hooks/useBlogsMutation";
-import { setAllBlogs } from "../../redux/features/blogSlice";
+import { setAllBlogs, setMyBlogs } from "../../redux/features/blogSlice";
 import { useDispatch } from "react-redux";
 
 export default function Search() {
@@ -14,6 +14,7 @@ export default function Search() {
         
         const result = await searchBlogByTitle.mutateAsync(search);
         dispatch(setAllBlogs(result?.data.result))
+        dispatch(setMyBlogs(result?.data.result))
     }
   return (
     <form className="relative mt-2 rounded-md shadow-sm max-w-[500px]" onSubmit={handleSubmit}>
