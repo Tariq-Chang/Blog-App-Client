@@ -4,6 +4,7 @@ import Signup from '../pages/Signup/Signup'
 import App from '../App'
 import Blogs from '../pages/Blogs/Blogs'
 import Profile from '../pages/Profile/Profile'
+import MyBlogs from '../pages/MyBlogs/MyBlogs'
 
 export const router = createBrowserRouter([
   {
@@ -24,7 +25,7 @@ export const router = createBrowserRouter([
       },
       {
         path: 'myBlogs',
-        element: <h1>My Blogs</h1>
+        element: <MyBlogs/>
       },
       {
         path: 'users',
