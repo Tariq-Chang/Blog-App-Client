@@ -1,7 +1,7 @@
 import { useSelector } from 'react-redux';
 import Cards from '../../layout/Cards/Cards'
 
-function MyBlogs() {
+function Blogs() {
   const blogs = useSelector((state: any) => state.blogs.blogs);
     console.log("blogs", blogs);
   return (
@@ -11,4 +11,4 @@ function MyBlogs() {
   )
 }
 
-export default MyBlogs
+export default Blogs
