@@ -11,7 +11,7 @@ import { logout } from "../../redux/features/userSlice";
 import { useState } from "react";
 
 function Sidebar() {
-  const [activeItem, setActiveItem] = useState<string>("");
+  const [activeItem, setActiveItem] = useState<string>("home");
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const handleLogout = () => {
