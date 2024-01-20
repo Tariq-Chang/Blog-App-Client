@@ -8,8 +8,10 @@ import { Link, useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 import { useDispatch } from "react-redux";
 import { logout } from "../../redux/features/userSlice";
+import { useState } from "react";
 
 function Sidebar() {
+  const [activeItem, setActiveItem] = useState<string>("");
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const handleLogout = () => {
@@ -18,6 +20,7 @@ function Sidebar() {
     dispatch(logout());
     navigate("/login");
   };
+
   return (
     <div className="flex h-screen w-20 flex-col justify-between border-r bg-white sticky top-0">
       <div>
@@ -31,9 +34,10 @@ function Sidebar() {
               <li>
                 <Link
                   to="dashboard"
-                  className="group relative flex justify-center rounded px-2 py-1.5 text-gray-500 hover:bg-gray-200 hover:text-gray-700"
+                  onClick={() => setActiveItem("home")}
+                  className={`group relative flex justify-center rounded px-2 py-1.5 text-gray-500 hover:bg-gray-200 hover:text-gray-700 ${activeItem === "home" && "bg-gray-200"}`}
                 >
-                  <GoHomeFill className="h-8 w-8 text-gray-800" />
+                  <GoHomeFill className={`h-8 w-8 text-gray-800 group-hover:text-blue-600 ${activeItem === "home" && " text-blue-600"}`} />
                   {/* <img src={homeIcon} alt="home" className='h-8 w-8' /> */}
                   <span className="absolute start-full top-1/2 ms-4 -translate-y-1/2 rounded bg-gray-900 px-2 py-1.5 text-xs font-medium text-white opacity-0 group-hover:opacity-100">
                     Home
@@ -44,9 +48,10 @@ function Sidebar() {
               <li>
                 <Link
                   to="myBlogs"
-                  className="group relative flex justify-center rounded px-2 py-1.5 text-gray-500 hover:bg-gray-200 hover:text-gray-700"
+                  onClick={() => setActiveItem("myblogs")}
+                  className={`group relative flex justify-center rounded px-2 py-1.5 text-gray-500 hover:bg-gray-200 hover:text-gray-700 ${activeItem === "myblogs" && "bg-gray-200"}`}
                 >
-                  <LiaBlogSolid className="h-8 w-8 text-gray-800" />
+                  <LiaBlogSolid className={`h-8 w-8 text-gray-800 group-hover:text-blue-600 ${activeItem === "myblogs" && " text-blue-600"}`} />
                   {/* <img src={homeIcon} alt="home" className='h-8 w-8' /> */}
                   <span className="absolute start-full top-1/2 ms-4 -translate-y-1/2 rounded bg-gray-900 px-2 py-1.5 text-xs font-medium text-white opacity-0 group-hover:opacity-100">
                     My Blogs
@@ -57,9 +62,10 @@ function Sidebar() {
               <li>
                 <Link
                   to="/create"
-                  className="group relative flex justify-center rounded px-2 py-1.5 text-gray-500 hover:bg-gray-200 hover:text-gray-700"
+                  onClick={() => setActiveItem("create")}
+                  className={`group relative flex justify-center rounded px-2 py-1.5 text-gray-500 hover:bg-gray-200 hover:text-gray-700 ${activeItem === "create" && "bg-gray-200"}`}
                 >
-                  <IoCreateOutline className="w-8 h-8 text-gray-800" />
+                  <IoCreateOutline className={`h-8 w-8 text-gray-800 group-hover:text-blue-600 ${activeItem === "create" && " text-blue-600"}`} />
                   <span className="absolute start-full top-1/2 ms-4 -translate-y-1/2 rounded bg-gray-900 px-2 py-1.5 text-xs font-medium text-white opacity-0 group-hover:opacity-100">
                     Write
                   </span>
