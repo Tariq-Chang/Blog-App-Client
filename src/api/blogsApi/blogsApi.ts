@@ -20,3 +20,11 @@ export const getUserBlogs = async() => {
     }
 }
 
+export const searchBlogByTitle = async(title: string) => {
+    try{
+        const result = await axios.get(`/blogs/search?title=${title}`)
+        return result;
+    }catch(error){
+        console.log(error);
+    }
+}
