@@ -2,6 +2,8 @@ import blogLogo from "../../assets/images/blogger.png";
 import { GoHomeFill } from "react-icons/go";
 import { IoCreateOutline } from "react-icons/io5";
 import { IoLogOutOutline } from "react-icons/io5";
+import { LiaBlogSolid } from "react-icons/lia";
+
 import { Link, useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 import { useDispatch } from "react-redux";
@@ -28,13 +30,26 @@ function Sidebar() {
             <ul className="space-y-4 pt-12">
               <li>
                 <Link
-                  to="blogs"
+                  to="dashboard"
                   className="group relative flex justify-center rounded px-2 py-1.5 text-gray-500 hover:bg-gray-200 hover:text-gray-700"
                 >
                   <GoHomeFill className="h-8 w-8 text-gray-800" />
                   {/* <img src={homeIcon} alt="home" className='h-8 w-8' /> */}
                   <span className="absolute start-full top-1/2 ms-4 -translate-y-1/2 rounded bg-gray-900 px-2 py-1.5 text-xs font-medium text-white opacity-0 group-hover:opacity-100">
                     Home
+                  </span>
+                </Link>
+              </li>
+
+              <li>
+                <Link
+                  to="myBlogs"
+                  className="group relative flex justify-center rounded px-2 py-1.5 text-gray-500 hover:bg-gray-200 hover:text-gray-700"
+                >
+                  <LiaBlogSolid className="h-8 w-8 text-gray-800" />
+                  {/* <img src={homeIcon} alt="home" className='h-8 w-8' /> */}
+                  <span className="absolute start-full top-1/2 ms-4 -translate-y-1/2 rounded bg-gray-900 px-2 py-1.5 text-xs font-medium text-white opacity-0 group-hover:opacity-100">
+                    My Blogs
                   </span>
                 </Link>
               </li>
