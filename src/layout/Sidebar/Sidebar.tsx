@@ -25,7 +25,7 @@ function Sidebar() {
   };
 
   return (
-    <div className="flex h-screen w-20 flex-col justify-between border-r bg-white sticky top-0">
+    <div className="flex h-screen w-20 flex-col justify-between border-r border-r-gray-300 bg-white sticky top-0">
       <div>
         <div className="flex h-20 w-20 items-center justify-center mt-6">
           <img src={blogLogo} alt="" className="blog__logo" />

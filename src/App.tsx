@@ -65,7 +65,7 @@ function App() {
           theme="dark"
         />
           <Header />
-          <span className="p-4 mx-4 border-t">
+          <span className="p-4 mx-4 border-t border-t-gray-300">
             <Outlet />
           </span>
         </div>
