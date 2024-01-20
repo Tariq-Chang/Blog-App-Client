@@ -20,11 +20,11 @@ export const router = createBrowserRouter([
     children: [
       {
         path: 'dashboard',
-        element: <h1>All Blogs</h1>
+        element: <MyBlogs/>
       },
       {
         path: 'blogs',
-        element: <MyBlogs/>
+        element: <h1>My Blogs</h1>
       },
       {
         path: 'users',

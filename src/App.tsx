@@ -8,7 +8,7 @@ import { useGetAllBlogsMutation } from "./hooks/useBlogsMutation";
 import SidebarRight from "./layout/SidebarRight/SidebarRight";
 import { ToastContainer, toast } from "react-toastify";
 import { useDispatch } from "react-redux";
-import { setBlogs } from "./redux/features/blogSlice";
+import { setAllBlogs } from "./redux/features/blogSlice";
 function App() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -21,7 +21,7 @@ function App() {
         navigate("/login");
       }
       const blogData = await getAllBlogsMutation.mutateAsync();
-      dispatch(setBlogs(blogData));
+      dispatch(setAllBlogs(blogData));
 
       const isLoggedIn = JSON.parse(localStorage.getItem('isLoggedIn') as string)
 

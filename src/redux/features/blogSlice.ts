@@ -4,22 +4,26 @@ import { InitialState } from "../../interfaces/InitialState";
 
 
 const initialState:InitialState = {
-    blogs: <Blog[]>{}
+    blogs: <Blog[]>{},
+    myBlogs: <Blog[]>{}
 }
 
 const blogSlice = createSlice({
-    name: 'user',
+    name: 'blog',
     initialState,
     reducers: {
-      setBlogs: (state, action) => {
+      setAllBlogs: (state, action) => {
         state.blogs = action.payload
-      },   
+      }, 
+      setMyBlogs: (state, action) => {
+        state.myBlogs = action.payload
+      },  
       logout: (state) => {
         state.blogs = []
       }
     }
 })
 
-export const {setBlogs} = blogSlice.actions;
+export const {setAllBlogs} = blogSlice.actions;
 export default blogSlice.reducer;
 
