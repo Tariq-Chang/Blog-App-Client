@@ -37,10 +37,10 @@ function Sidebar() {
               <li>
                 <Link
                   to="dashboard"
-                  onClick={() => setActiveItem("home")}
-                  className={`group relative flex justify-center rounded px-2 py-1.5 text-gray-500 hover:bg-gray-200 hover:text-gray-700 ${activeItem === "home" && "bg-gray-200"}`}
+                  onClick={() => setActiveItem("dashboard")}
+                  className={`group relative flex justify-center rounded px-2 py-1.5 text-gray-500 hover:bg-gray-200 hover:text-gray-700 ${activeItem === "dashboard" && "bg-gray-200"}`}
                 >
-                  <GoHomeFill className={`h-8 w-8 text-gray-800 group-hover:text-blue-600 ${activeItem === "home" && " text-blue-600"}`} />
+                  <GoHomeFill className={`h-8 w-8 text-gray-800 group-hover:text-blue-600 ${activeItem === "dashboard" && " text-blue-600"}`} />
                   {/* <img src={homeIcon} alt="home" className='h-8 w-8' /> */}
                   <span className="absolute start-full top-1/2 ms-4 -translate-y-1/2 rounded bg-gray-900 px-2 py-1.5 text-xs font-medium text-white opacity-0 group-hover:opacity-100">
                     Home
