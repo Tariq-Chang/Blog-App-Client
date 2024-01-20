@@ -4,14 +4,17 @@ import { IoCreateOutline } from "react-icons/io5";
 import { IoLogOutOutline } from "react-icons/io5";
 import { LiaBlogSolid } from "react-icons/lia";
 
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 import { useDispatch } from "react-redux";
 import { logout } from "../../redux/features/userSlice";
 import { useState } from "react";
 
 function Sidebar() {
-  const [activeItem, setActiveItem] = useState<string>("home");
+  const location = useLocation();
+  const activeItemName = location.pathname.split('/')[1].toLowerCase();
+  const [activeItem, setActiveItem] = useState<string>(activeItemName);
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const handleLogout = () => {
