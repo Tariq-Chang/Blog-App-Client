@@ -17,6 +17,10 @@ const blogSlice = createSlice({
       }, 
       setMyBlogs: (state, action) => {
         state.myBlogs = action.payload
+      },
+      clearBlogs: (state) => {
+        state.blogs = [];
+        state.myBlogs = [];
       },  
       logout: (state) => {
         state.blogs = []
@@ -24,6 +28,6 @@ const blogSlice = createSlice({
     }
 })
 
-export const {setAllBlogs, setMyBlogs} = blogSlice.actions;
+export const {setAllBlogs, setMyBlogs, clearBlogs} = blogSlice.actions;
 export default blogSlice.reducer;
 

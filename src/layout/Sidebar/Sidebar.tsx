@@ -9,6 +9,7 @@ import Cookies from "js-cookie";
 import { useDispatch } from "react-redux";
 import { logout } from "../../redux/features/userSlice";
 import { useState } from "react";
+import { clearBlogs } from "../../redux/features/blogSlice";
 
 function Sidebar() {
   const location = useLocation();
@@ -21,6 +22,7 @@ function Sidebar() {
     Cookies.remove("jwtToken");
     localStorage.removeItem("isLoggedIn");
     dispatch(logout());
+    dispatch(clearBlogs());
     navigate("/login");
   };
 
