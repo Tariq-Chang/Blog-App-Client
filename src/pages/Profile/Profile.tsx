@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 
 function Profile() {
   const user: User = useSelector((state: any) => state.user.activeUser);
-  const {username, email, profile} = user;
+  const { username, email, profile } = user;
   const navigate = useNavigate();
   console.log(user);
   return (
@@ -22,15 +22,17 @@ function Profile() {
       </div>
       <div className="flex flex-col lg:flex-row w-[60%] mx-auto border py-5 px-3 rounded-lg">
         <div className="sm:mr-4">
-          <img
-            className="rounded-full h-48 w-48 mx-auto lg:mx-0 my-4"
-            src={profile?.avatar}
-            alt={username}
-          />
+          <a href={profile?.avatar} target="_blank">
+            <img
+              className="rounded-full h-48 w-48 mx-auto object-cover hover:opacity-70 lg:mx-0 my-4"
+              src={profile?.avatar}
+              alt={username}
+            />
+          </a>
           <input type="file" name="profile" id="profile" />
         </div>
 
-        <form className="space-y-4 flex-grow mx-5" >
+        <form className="space-y-4 flex-grow mx-5">
           <div>
             <label htmlFor="username">Username</label>
             <input

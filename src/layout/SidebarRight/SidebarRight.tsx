@@ -25,7 +25,7 @@ function SidebarRight() {
       <div className="flex items-center w-100">
           <img
             id="avatarButton"
-            className="w-10 h-10 object-contain rounded-full cursor-pointer"
+            className="w-10 h-10 object-contain rounded-full cursor-pointer border-2 border-gray-800"
             src={user?.profile?.avatar}
             alt="User dropdown"
             onClick={handleShowAvatarOptions}
