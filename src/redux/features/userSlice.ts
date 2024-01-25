@@ -13,12 +13,15 @@ const userSlice = createSlice({
       setCurrentUser: (state, action) => {
         state.activeUser = action.payload;
       },
+      setCurrentUserProfilePhoto: (state, action) => {
+        state.activeUser.profile.avatar = action.payload;
+      },
       logout: (state) => {
         state.activeUser = {}
       }   
     }
 })
 
-export const {setCurrentUser, logout} = userSlice.actions;
+export const {setCurrentUser, setCurrentUserProfilePhoto,logout} = userSlice.actions;
 export default userSlice.reducer;
 

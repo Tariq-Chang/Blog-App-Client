@@ -1,13 +1,57 @@
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { User } from "../../interfaces/User";
 import { BsArrowLeftSquareFill } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
+import { ChangeEvent, useState } from "react";
+import { useUpdateProfileMutation } from "../../hooks/useProfileMutation";
+import axios from "axios";
+import Cookies from 'js-cookie';
+import { setCurrentUserProfilePhoto } from "../../redux/features/userSlice";
 
 function Profile() {
-  const user: User = useSelector((state: any) => state.user.activeUser);
-  const { username, email, profile } = user;
+  const [file, setFile] = useState<File | null>(null);
+  const dispatch = useDispatch();
   const navigate = useNavigate();
-  console.log(user);
+  const user: User = useSelector((state: any) => state.user.activeUser);
+    
+  const updateProfilePhotoMutation = useUpdateProfileMutation();
+
+  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+
+    if (files && files.length > 0) setFile(files[0]);
+  };
+
+  const handleUpload = async () => {
+    console.log("file", file);
+    try {
+      if (!file) {
+        console.error("No file selected");
+        return;
+      }
+      const formData = new FormData();
+      formData.append("profile", file);
+
+      const token = Cookies.get('jwtToken');
+      const response = await axios.post('http://localhost:5000/api/v1/profile/upload', formData, {
+        headers: {
+          "Authorization": `Bearer ${token}`
+        }
+      })
+      // const response = await updateProfilePhotoMutation.mutateAsync(file);
+      // dispatch(setCurrentUserProfilePhoto(user?.profile?.avatar))
+      console.log("response data", response.data)
+      dispatch(setCurrentUserProfilePhoto(response.data.img_url))
+
+      // dispatch(setCurrentUserProfilePhoto(activeUser?.profile?.avatar))
+      setFile(null);
+      console.log("Upload successful:");
+
+    } catch (error) {
+      console.error("Error uploading profile image:", error);
+    }
+  };
+
   return (
     <div className="w-100">
       <div className="w-[60%] mx-auto h-16 text-2xl cursor-pointer hover:text-gray-700">
@@ -22,14 +66,29 @@ function Profile() {
       </div>
       <div className="flex flex-col lg:flex-row w-[60%] mx-auto border py-5 px-3 rounded-lg">
         <div className="sm:mr-4">
-          <a href={profile?.avatar} target="_blank">
+          <a href={user?.profile?.avatar} target="_blank">
             <img
               className="rounded-full h-48 w-48 mx-auto object-cover hover:opacity-70 lg:mx-0 my-4"
-              src={profile?.avatar}
-              alt={username}
+              src={user?.profile?.avatar ? user?.profile?.avatar : 'https://www.w3schools.com/w3images/avatar2.png'}
+              alt={user?.username}
             />
           </a>
-          <input type="file" name="profile" id="profile" />
+          <input
+            type="file"
+            name="profile"
+            id="profile"
+            onChange={handleFileChange}
+          />
+          {file && (
+            <div>
+              <button
+                className="w-full sm:w-auto rounded-lg bg-black px-5 py-2 mt-2 font-medium text-white"
+                onClick={handleUpload}
+              >
+                Update
+              </button>
+            </div>
+          )}
         </div>
 
         <form className="space-y-4 flex-grow mx-5">
@@ -40,7 +99,7 @@ function Profile() {
               placeholder="Username"
               type="text"
               id="username"
-              value={username}
+              value={user?.username}
             />
           </div>
 
@@ -51,7 +110,7 @@ function Profile() {
               placeholder="Email address"
               type="email"
               id="email"
-              value={email}
+              value={user?.email}
             />
           </div>
 
@@ -62,7 +121,7 @@ function Profile() {
               placeholder="Bio"
               rows={8}
               id="bio"
-              value={profile?.bio}
+              value={user?.profile?.bio}
             ></textarea>
           </div>
 
