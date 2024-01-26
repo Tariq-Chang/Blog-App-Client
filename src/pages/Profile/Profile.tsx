@@ -4,8 +4,6 @@ import { BsArrowLeftSquareFill } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 import { ChangeEvent, useState } from "react";
 import { useUpdateProfileMutation } from "../../hooks/useProfileMutation";
-import axios from "axios";
-import Cookies from 'js-cookie';
 import { setCurrentUserProfilePhoto } from "../../redux/features/userSlice";
 
 function Profile() {
@@ -23,7 +21,6 @@ function Profile() {
   };
 
   const handleUpload = async () => {
-    console.log("file", file);
     try {
       if (!file) {
         console.error("No file selected");
@@ -32,20 +29,10 @@ function Profile() {
       const formData = new FormData();
       formData.append("profile", file);
 
-      const token = Cookies.get('jwtToken');
-      const response = await axios.post('http://localhost:5000/api/v1/profile/upload', formData, {
-        headers: {
-          "Authorization": `Bearer ${token}`
-        }
-      })
-      // const response = await updateProfilePhotoMutation.mutateAsync(file);
-      // dispatch(setCurrentUserProfilePhoto(user?.profile?.avatar))
-      console.log("response data", response.data)
-      dispatch(setCurrentUserProfilePhoto(response.data.img_url))
-
-      // dispatch(setCurrentUserProfilePhoto(activeUser?.profile?.avatar))
+      const response = await updateProfilePhotoMutation.mutateAsync(formData);
+      dispatch(setCurrentUserProfilePhoto(response?.data.img_url))
       setFile(null);
-      console.log("Upload successful:");
+      console.log("Upload successful");
 
     } catch (error) {
       console.error("Error uploading profile image:", error);

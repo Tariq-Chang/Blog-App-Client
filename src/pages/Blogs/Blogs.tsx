@@ -6,7 +6,7 @@ function Blogs() {
     console.log("blogs", blogs);
   return (
     <div>
-        {blogs.length > 0 ? <Cards blogs={blogs}/> : <h1 className="text-2xl">Blogs not found!</h1>}
+        {blogs?.length > 0 ? <Cards blogs={blogs}/> : <h1 className="text-2xl">Blogs not found!</h1>}
     </div>
   )
 }
