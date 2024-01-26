@@ -5,15 +5,16 @@ import { useNavigate } from "react-router-dom";
 import { ChangeEvent, useState } from "react";
 import { useUpdateProfileMutation } from "../../hooks/useProfileMutation";
 import { setCurrentUserProfilePhoto } from "../../redux/features/userSlice";
+import { BeatLoader } from "react-spinners";
 
 function Profile() {
   const [file, setFile] = useState<File | null>(null);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const user: User = useSelector((state: any) => state.user.activeUser);
-    
-  const updateProfilePhotoMutation = useUpdateProfileMutation();
 
+  const updateProfilePhotoMutation = useUpdateProfileMutation();
+  const { isLoading } = updateProfilePhotoMutation;
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
 
@@ -30,10 +31,9 @@ function Profile() {
       formData.append("profile", file);
 
       const response = await updateProfilePhotoMutation.mutateAsync(formData);
-      dispatch(setCurrentUserProfilePhoto(response?.data.img_url))
+      dispatch(setCurrentUserProfilePhoto(response?.data.img_url));
       setFile(null);
       console.log("Upload successful");
-
     } catch (error) {
       console.error("Error uploading profile image:", error);
     }
@@ -53,13 +53,32 @@ function Profile() {
       </div>
       <div className="flex flex-col lg:flex-row w-[60%] mx-auto border py-5 px-3 rounded-lg">
         <div className="sm:mr-4">
-          <a href={user?.profile?.avatar} target="_blank">
-            <img
-              className="rounded-full h-48 w-48 mx-auto object-cover hover:opacity-70 lg:mx-0 my-4"
-              src={user?.profile?.avatar ? user?.profile?.avatar : 'https://www.w3schools.com/w3images/avatar2.png'}
-              alt={user?.username}
-            />
-          </a>
+          <div>
+            <a
+              href={user?.profile?.avatar}
+              target="_blank"
+              className={`relative top-0.5 grid place-items-center w-48 h-48 mx-auto rounded-full`}
+            >
+              {isLoading && (
+                <BeatLoader
+                  color="#000"
+                  size="20"
+                  className="absolute grid place-items-center rotate-90 mt-6"
+                />
+              )}
+              <img
+                className={`rounded-full h-48 w-48 mx-auto object-cover hover:opacity-70 lg:mx-0 my-4 ${
+                  isLoading && "opacity-30"
+                }`}
+                src={
+                  user?.profile?.avatar
+                    ? user?.profile?.avatar
+                    : "https://www.w3schools.com/w3images/avatar2.png"
+                }
+                alt={user?.username}
+              />
+            </a>
+          </div>
           <input
             type="file"
             name="profile"
