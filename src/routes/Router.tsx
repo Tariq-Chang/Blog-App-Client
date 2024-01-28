@@ -5,11 +5,12 @@ import App from '../App'
 import Blogs from '../pages/Blogs/Blogs'
 import Profile from '../pages/Profile/Profile'
 import MyBlogs from '../pages/MyBlogs/MyBlogs'
+import LandingPage from '../pages/LandingPage/LandingPage'
 
 export const router = createBrowserRouter([
   {
     path: '/',
-    element: <h1>Landing Page</h1>
+    element: <LandingPage/>
   },
   {
     path: '/login',
