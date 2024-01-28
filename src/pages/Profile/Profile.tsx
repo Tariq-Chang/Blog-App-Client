@@ -79,7 +79,7 @@ function Profile() {
             <a
               href={user?.profile?.avatar}
               target="_blank"
-              className={`relative top-0.5 grid place-items-center w-48 h-48 mx-auto rounded-full`}
+              className={`relative mb-8 top-0.5 grid place-items-center w-48 h-48 mx-auto rounded-full`}
             >
               {isLoading && (
                 <BeatLoader
