@@ -3,7 +3,7 @@ import { User } from "../../interfaces/User";
 import { BsArrowLeftSquareFill } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 import { ChangeEvent, FormEvent, useState } from "react";
-import { useUpdateProfileMutation } from "../../hooks/useProfileMutation";
+import { useUpdateProfileMutation, useUpdateUserInfoMutation } from "../../hooks/useProfileMutation";
 import { setCurrentUser, setCurrentUserProfilePhoto } from "../../redux/features/userSlice";
 import { BeatLoader } from "react-spinners";
 import axios from "axios";
@@ -18,6 +18,8 @@ function Profile() {
   const [bio, setBio] = useState<string | undefined>(user?.profile?.bio);
 
   const updateProfilePhotoMutation = useUpdateProfileMutation();
+  const updateUserInfoMutation = useUpdateUserInfoMutation();
+
   const { isLoading } = updateProfilePhotoMutation;
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
@@ -48,14 +50,9 @@ function Profile() {
     e.preventDefault();
 
     try {
-      const token = Cookies.get('jwtToken');
-      const response = await axios.put('http://localhost:5000/api/v1/blogs/updateUserInfo', {username, bio}, {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      })
+      const response = await updateUserInfoMutation.mutateAsync({username, bio})
       console.log("updated user", response);
-      dispatch(setCurrentUser(response.data.updatedUser))
+      dispatch(setCurrentUser(response?.data.updatedUser))
     } catch (error) {
       console.error(error);
     }

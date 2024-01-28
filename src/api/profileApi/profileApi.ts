@@ -1,3 +1,4 @@
+import { User } from "../../interfaces/User";
 import axios from "../axios";
 export const updateProfilePhoto = async (formData: FormData) => {
   try{
@@ -12,3 +13,12 @@ export const updateProfilePhoto = async (formData: FormData) => {
     console.error("Uploading failed", error)
   }
 };
+
+export const updateUserInfo = async(userInfo: User) => {
+  try{
+    const response = await axios.put('/blogs/updateUserInfo', userInfo);
+    return response;
+  }catch(error){
+    console.error("Failed to update the user");
+  }
+}
