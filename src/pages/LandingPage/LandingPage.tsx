@@ -1,18 +1,35 @@
+import { Link, useNavigate } from "react-router-dom";
 import blogLogo from "../../assets/images/blogger.png";
-import personWithLaptop from '../../assets/images/landing_page.png'
+import personWithLaptop from "../../assets/images/landing_page.png";
+import { useEffect } from "react";
+import Cookies from "js-cookie";
 const LandingPage = () => {
+  const navigate = useNavigate();
+  useEffect(() => {
+    const token = Cookies.get("jwtToken");
+
+    if (token) {
+      navigate("/dashboard");
+    }
+  }, []);
   return (
     <>
       <div className="main__container mt-8">
         <header className="flex justify-between w-[80%] mx-auto">
           <img src={blogLogo} alt="blog logo" className="blog__logo" />
           <div className="flex">
-            <button className="flex justify-center rounded-md border border-gray-900 w-[150px] px-3 py-2 mr-2 text-sm font-semibold leading-6 shadow-sm hover:bg-gray-950 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-950">
+            <Link
+              to="/login"
+              className="flex justify-center rounded-md border border-gray-900 w-[150px] px-3 py-2 mr-2 text-sm font-semibold leading-6 shadow-sm hover:bg-gray-950 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-950"
+            >
               Login
-            </button>
-            <button className="flex justify-center rounded-md bg-gray-900 w-[150px] px-3 py-2 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-gray-950 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-950">
+            </Link>
+            <Link
+              to="/register"
+              className="flex justify-center rounded-md bg-gray-900 w-[150px] px-3 py-2 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-gray-950 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-950"
+            >
               Register
-            </button>
+            </Link>
           </div>
         </header>
         <section className="flex justify-between w-[80%] mx-auto">
@@ -28,13 +45,20 @@ const LandingPage = () => {
               </p>
             </div>
             <div>
-              <button className="flex justify-center rounded-md bg-gray-900 w-[150px] px-3 py-2 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-gray-950 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-950">
+              <Link
+                to="/register"
+                className="flex justify-center rounded-md bg-gray-900 w-[150px] px-3 py-2 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-gray-950 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-950"
+              >
                 Get Started
-              </button>
+              </Link>
             </div>
           </div>
           <div className="flex w-72 h-72 rounded-full bg-yellow-400 my-32 mr-28 relative">
-            <img src={personWithLaptop} alt="Person with laptop" className="object-cover"/>
+            <img
+              src={personWithLaptop}
+              alt="Person with laptop"
+              className="object-cover"
+            />
           </div>
         </section>
       </div>

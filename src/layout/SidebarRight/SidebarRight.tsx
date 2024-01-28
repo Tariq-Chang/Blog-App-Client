@@ -18,7 +18,7 @@ function SidebarRight() {
     Cookies.remove("jwtToken");
     localStorage.removeItem('isLoggedIn');
     dispatch(logout());
-    navigate("/login");
+    navigate("/");
   };
   return (
     <div className="flex h-screen p-4 pt-12 flex-col  border-l border-l-gray-300 bg-white sticky top-0">

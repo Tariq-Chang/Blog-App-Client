@@ -23,7 +23,7 @@ function Sidebar() {
     localStorage.removeItem("isLoggedIn");
     dispatch(logout());
     dispatch(clearBlogs());
-    navigate("/login");
+    navigate("/");
   };
 
   return (
