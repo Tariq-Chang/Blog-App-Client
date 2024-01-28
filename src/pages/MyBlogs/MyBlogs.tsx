@@ -6,7 +6,7 @@ function MyBlogs() {
 
   return (
     <div>
-        {myBlogs.length > 0 ? <Cards blogs={myBlogs}/> : <h1 className="text-2xl">User has not written any Blog</h1>}
+        {(myBlogs && myBlogs.length > 0) ? <Cards blogs={myBlogs}/> : <h1 className="text-2xl">User has not written any Blog</h1>}
     </div>
   )
 }

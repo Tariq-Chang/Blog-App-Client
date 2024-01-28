@@ -8,6 +8,10 @@ import MyBlogs from '../pages/MyBlogs/MyBlogs'
 
 export const router = createBrowserRouter([
   {
+    path: '/',
+    element: <h1>Landing Page</h1>
+  },
+  {
     path: '/login',
     element: <Login/>
   },
