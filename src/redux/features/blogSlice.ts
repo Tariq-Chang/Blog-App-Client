@@ -5,7 +5,8 @@ import { InitialState } from "../../interfaces/InitialState";
 
 const initialState:InitialState = {
     blogs: <Blog[]>{},
-    myBlogs: <Blog[]>{}
+    myBlogs: <Blog[]>{},
+    savedBlogs: <Blog[]>{}
 }
 
 const blogSlice = createSlice({
@@ -21,6 +22,9 @@ const blogSlice = createSlice({
       clearBlogs: (state) => {
         state.blogs = [];
         state.myBlogs = [];
+      },
+      saveBlogs: (state, action) => {
+        state.savedBlogs = action.payload;
       },  
       logout: (state) => {
         state.blogs = []
@@ -28,6 +32,6 @@ const blogSlice = createSlice({
     }
 })
 
-export const {setAllBlogs, setMyBlogs, clearBlogs} = blogSlice.actions;
+export const {setAllBlogs, setMyBlogs, clearBlogs, saveBlogs} = blogSlice.actions;
 export default blogSlice.reducer;
 

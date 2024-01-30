@@ -1,13 +1,17 @@
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { User } from "../../interfaces/User";
 import { Blog } from "../../interfaces/Blog";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Cookies from "js-cookie";
+import { BiHeart } from "react-icons/bi";
+import { FaHeart } from "react-icons/fa";
+import { saveBlogs } from "../../redux/features/blogSlice";
 
-function Card({ title, content, author, thumbnail }: Blog) {
+function Card({ _id, title, author, thumbnail, blog }: Blog) {
+  const dispatch = useDispatch();
+  const [bookmark, setBookamark] = useState<boolean>(false);
   const [authorData, setAuthorData] = useState<User | null>(null);
-  console.log("author", author);
   useEffect(() => {
     const getUser = async () => {
       try {
@@ -27,10 +31,15 @@ function Card({ title, content, author, thumbnail }: Blog) {
     };
     getUser();
   }, []);
-  console.log(authorData);
+
+
+  const bookmarkBlog = () => {
+    dispatch(saveBlogs(blog));
+    setBookamark(!bookmark);
+  }
   return (
     <div className="w-100">
-      <article className=" relative overflow-hidden rounded-lg shadow transition hover:shadow-lg">
+      <article className="relative overflow-hidden rounded-lg shadow transition hover:shadow-lg">
         <img
           alt="Office"
           src={thumbnail}
@@ -38,6 +47,10 @@ function Card({ title, content, author, thumbnail }: Blog) {
         />
 
         <div className="relative bg-gradient-to-t from-gray-900/50 to-gray-900/25 pt-16 sm:pt-28 lg:pt-40">
+          <FaHeart
+            className={`absolute top-0 left-0 text-2xl ${bookmark ? "text-red-500" : "text-gray-600"} m-4 cursor-pointer sm:m-6`}
+            onClick={bookmarkBlog}
+          />
           <div className="p-4 sm:p-6">
             <time className="block text-xs text-white/90">10th Oct 2022</time>
 
@@ -52,7 +65,9 @@ function Card({ title, content, author, thumbnail }: Blog) {
                 alt="avatar"
               />
               <div className="font-medium dark:text-white mb-1">
-                <p className="text-white drop-shadow-lg">{authorData?.username}</p>
+                <p className="text-white drop-shadow-lg">
+                  {authorData?.username}
+                </p>
                 <p className="text-sm text-gray-200 dark:text-gray-400">
                   {authorData?.email}
                 </p>

@@ -11,8 +11,8 @@ function Cards({ blogs }:CardsProps) {
   return (
     <div className="grid__container gap-5">
       {
-        (blogs?.map(({ title, content, author, thumbnail }: Blog) => {
-          return <Card title={title} content={content} author={author} thumbnail={thumbnail} />
+        (blogs?.map((blog: Blog) => {
+          return <Card _id={blog._id} title={blog.title} author={blog.author} thumbnail={blog.thumbnail} blog={blog}/>
         }))
       }
     </div>
