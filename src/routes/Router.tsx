@@ -6,6 +6,7 @@ import Blogs from '../pages/Blogs/Blogs'
 import Profile from '../pages/Profile/Profile'
 import MyBlogs from '../pages/MyBlogs/MyBlogs'
 import LandingPage from '../pages/LandingPage/LandingPage'
+import Create from '../pages/CreatePage/Create'
 
 export const router = createBrowserRouter([
   {
@@ -32,14 +33,14 @@ export const router = createBrowserRouter([
         path: 'myBlogs',
         element: <MyBlogs/>
       },
-      {
-        path: 'users',
-        element: <h1>Users</h1>
-      }
     ]
   },
   {
     path: '/profile',
     element: <Profile/>
+  },
+  {
+    path: 'create',
+    element: <Create/>
   }
 ])
