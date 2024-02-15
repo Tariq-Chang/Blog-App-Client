@@ -12,7 +12,7 @@ function Cards({ blogs }:CardsProps) {
     <div className="grid__container gap-5">
       {
         (blogs?.map((blog: Blog) => {
-          return <Card _id={blog._id} title={blog.title} author={blog.author} thumbnail={blog.thumbnail} blog={blog}/>
+          return <Card key={blog._id} _id={blog._id} title={blog.title} author={blog.author} thumbnail={blog.thumbnail} blog={blog}/>
         }))
       }
     </div>
