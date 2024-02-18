@@ -20,12 +20,12 @@ export default function Create() {
     })
 
     const url = "http://localhost:5000/api/v1/blogs";
-    const textAreaRef = useRef();
+    const textAreaRef = useRef<HTMLTextAreaElement>(null);
     const handleThumbnailChange = async (e: ChangeEvent<HTMLInputElement>) => {
         const files = e.target.files;
         const token = Cookies.get('jwtToken');
         const formData = new FormData();
-        formData.append('thumbnail', files[0])
+        formData.append('thumbnail', files![0])
         try {
             const response = await axios.post(url + '/addBlogThumbnail', formData, {
                 headers: {
@@ -41,7 +41,7 @@ export default function Create() {
         }
     }
 
-    const handleTextAreaChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const handleTextAreaChange = (event: React.ChangeEvent<HTMLTextAreaElement>):void => {
         setPost({ ...post, content: event.target.value })
         adjustTextareaHeight();
     };
@@ -53,8 +53,7 @@ export default function Create() {
         }
     };
 
-    const handleCreatePost = async (e: React.ChangeEvent<HTMLInputElement>) => {
-        e.preventDefault();
+    const handleCreatePost = async () => {
         const token = Cookies.get('jwtToken');
         const response = await axios.post(url + '/create', post, {
             headers: {
@@ -62,7 +61,6 @@ export default function Create() {
             }
         })
         console.log("post", response.data);
-        dispatch(recentBlog(post))
         dispatch(setMyBlogs({ ...myBlogs, post }))
         navigate('/dashboard');
     }
