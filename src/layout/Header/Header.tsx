@@ -2,8 +2,10 @@ import { useState } from "react";
 import Search from "../../components/Search/Search";
 import { BiSolidBell } from "react-icons/bi";
 import { BsFillBookmarkFill } from "react-icons/bs";
+import { Navigate, useNavigate } from "react-router-dom";
 function Header() {
   const [showNofications, setShowNotifications] = useState<boolean>(false);
+  const navigate = useNavigate();
 
   const handleNotificationToggle = () => {
     setShowNotifications(!showNofications)
@@ -41,7 +43,7 @@ function Header() {
           }
           
         </div>
-        <BsFillBookmarkFill className="h-6 w-5 text-gray-700 hover:text-gray-900" />
+        <BsFillBookmarkFill className="h-6 w-5 cursor-pointer text-gray-700 hover:text-gray-900" onClick={() => navigate('/bookmarks')}/>
       </div>
     </div>
   );
