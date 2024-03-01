@@ -3,8 +3,11 @@ import { useEffect, useState } from "react";
 import Cookies from 'js-cookie'
 import Cards from "../../layout/Cards/Cards";
 import { Blog } from "../../interfaces/Blog";
+import { useDispatch } from "react-redux";
+import { saveBlogs } from "../../redux/features/blogSlice";
 
 const Bookmarks = () => {
+    const dispatch = useDispatch();
     const [savedBlogs, setSavedBlogs] = useState<Blog[]>()
     const url = "http://localhost:5000/api/v1/blogs";
     const fetchSavedBlogs = async() => {
@@ -16,6 +19,8 @@ const Bookmarks = () => {
         });
         
         setSavedBlogs(response.data[0].savedBlogs);
+        dispatch(saveBlogs(response.data[0].savedBlogs))
+
     }
     useEffect(() => {
         fetchSavedBlogs();

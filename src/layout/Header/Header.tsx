@@ -2,8 +2,10 @@ import { useState } from "react";
 import Search from "../../components/Search/Search";
 import { BiSolidBell } from "react-icons/bi";
 import { BsFillBookmarkFill } from "react-icons/bs";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 function Header() {
+  const savedBlogs = useSelector((state: any) => state.blogs.savedBlogs);
   const [showNofications, setShowNotifications] = useState<boolean>(false);
   const navigate = useNavigate();
 
@@ -43,7 +45,12 @@ function Header() {
           }
           
         </div>
-        <BsFillBookmarkFill className="h-6 w-5 cursor-pointer text-gray-700 hover:text-gray-900" onClick={() => navigate('/bookmarks')}/>
+        <div className="relative">
+          <BsFillBookmarkFill className="h-6 w-5 cursor-pointer text-gray-700 hover:text-gray-900" 
+            onClick={() => navigate('/bookmarks')}/>
+            <span className="absolute -top-1 -right-1 text-xs px-1 rounded-full bg-blue-600 text-white">{savedBlogs.length || 0}</span>
+        </div>
+
       </div>
     </div>
   );

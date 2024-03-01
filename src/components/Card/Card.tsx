@@ -7,20 +7,17 @@ import myAxios from '../../api/axios'
 import Cookies from "js-cookie";
 import { FaHeart } from "react-icons/fa";
 import { saveBlogs } from "../../redux/features/blogSlice";
-import { setCurrentUser } from "../../redux/features/userSlice";
 
 function Card({ _id, title, author, thumbnail, blog }: Blog) {
-  const activeUser = useSelector((state:any) => state.user.activeUser)
+  const savedBlogs = useSelector((state:any) => state.blogs.savedBlogs)
   const dispatch = useDispatch();
+
   const [bookmark, setBookamark] = useState<boolean>(() => {
-    const result = (activeUser.savedBlogs.includes(_id?.toString()))
-    console.log("result",result);
-    if(result === false){
-      return false;
-    }else {
-      return true;
-    }
+    const result = savedBlogs.find((savedBlog:Blog) => savedBlog?._id!.toString() === _id?.toString())
+    if(result) return true;
+    else return false;
   });
+
   const [authorData, setAuthorData] = useState<User | null>(null);
 
   useEffect(() => {
@@ -41,22 +38,17 @@ function Card({ _id, title, author, thumbnail, blog }: Blog) {
       }
     };
     getUser();
-  }, []);
+  }, [bookmark]);
 
 
   const bookmarkBlog = async () => {
-    const token = Cookies.get('jwtToken');
     if(bookmark === false){
-      setBookamark(!bookmark);
       try {
-        const response = await axios.put(
-          `http://localhost:5000/api/v1/blogs/saveBlog/${_id}`,{blogId: blog?._id}, {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-        dispatch(saveBlogs(blog));
+        const response = await myAxios.put(`blogs/saveBlog/${_id}`, {blogId: blog?._id});
+        const savedBlogsResponse = await myAxios.get('blogs/savedBlogs');
+        
+        setBookamark(!bookmark);
+        dispatch(saveBlogs(savedBlogsResponse.data[0].savedBlogs))
         return response;
       } catch (error) {
         console.error(error);
@@ -64,9 +56,8 @@ function Card({ _id, title, author, thumbnail, blog }: Blog) {
     } else{
       try {
         const response = await myAxios.delete(`/blogs/removeSavedBlog/${_id}`);
-        console.log("remove response");
-        // setCurrentUser(response?.data.user)
-        dispatch(saveBlogs(blog));
+        const savedBlogsResponse = await myAxios.get('blogs/savedBlogs');
+        dispatch(saveBlogs(savedBlogsResponse.data[0].savedBlogs))
         setBookamark(!bookmark);
         return response;
       } catch (error) {
