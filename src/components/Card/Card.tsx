@@ -3,15 +3,26 @@ import { User } from "../../interfaces/User";
 import { Blog } from "../../interfaces/Blog";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import myAxios from '../../api/axios'
 import Cookies from "js-cookie";
-import { BiHeart } from "react-icons/bi";
 import { FaHeart } from "react-icons/fa";
 import { saveBlogs } from "../../redux/features/blogSlice";
+import { setCurrentUser } from "../../redux/features/userSlice";
 
 function Card({ _id, title, author, thumbnail, blog }: Blog) {
+  const activeUser = useSelector((state:any) => state.user.activeUser)
   const dispatch = useDispatch();
-  const [bookmark, setBookamark] = useState<boolean>(false);
+  const [bookmark, setBookamark] = useState<boolean>(() => {
+    const result = (activeUser.savedBlogs.includes(_id?.toString()))
+    console.log("result",result);
+    if(result === false){
+      return false;
+    }else {
+      return true;
+    }
+  });
   const [authorData, setAuthorData] = useState<User | null>(null);
+
   useEffect(() => {
     const getUser = async () => {
       try {
@@ -33,9 +44,36 @@ function Card({ _id, title, author, thumbnail, blog }: Blog) {
   }, []);
 
 
-  const bookmarkBlog = () => {
-    dispatch(saveBlogs(blog));
-    setBookamark(!bookmark);
+  const bookmarkBlog = async () => {
+    const token = Cookies.get('jwtToken');
+    if(bookmark === false){
+      setBookamark(!bookmark);
+      try {
+        const response = await axios.put(
+          `http://localhost:5000/api/v1/blogs/saveBlog/${_id}`,{blogId: blog?._id}, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        dispatch(saveBlogs(blog));
+        return response;
+      } catch (error) {
+        console.error(error);
+      }
+    } else{
+      try {
+        const response = await myAxios.delete(`/blogs/removeSavedBlog/${_id}`);
+        console.log("remove response");
+        // setCurrentUser(response?.data.user)
+        dispatch(saveBlogs(blog));
+        setBookamark(!bookmark);
+        return response;
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
   }
   return (
     <div className="w-100">
