@@ -7,8 +7,10 @@ import myAxios from '../../api/axios'
 import Cookies from "js-cookie";
 import { FaHeart } from "react-icons/fa";
 import { saveBlogs } from "../../redux/features/blogSlice";
+import {useLocation} from 'react-router-dom';
 
 function Card({ _id, title, author, thumbnail, blog }: Blog) {
+  const location = useLocation();
   const savedBlogs = useSelector((state:any) => state.blogs.savedBlogs)
   const dispatch = useDispatch();
 
@@ -57,6 +59,9 @@ function Card({ _id, title, author, thumbnail, blog }: Blog) {
       try {
         const response = await myAxios.delete(`/blogs/removeSavedBlog/${_id}`);
         const savedBlogsResponse = await myAxios.get('blogs/savedBlogs');
+        
+        if(location.pathname === "/bookmarks") window.location.reload();
+        
         dispatch(saveBlogs(savedBlogsResponse.data[0].savedBlogs))
         setBookamark(!bookmark);
         return response;
