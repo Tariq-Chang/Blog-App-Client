@@ -8,6 +8,7 @@ import MyBlogs from '../pages/MyBlogs/MyBlogs'
 import LandingPage from '../pages/LandingPage/LandingPage'
 import Create from '../pages/CreatePage/Create'
 import Bookmarks from '../pages/Bookmarks/Bookmarks'
+import BlogDetails from '../pages/BlogDetails/BlogDetails'
 
 export const router = createBrowserRouter([
   {
@@ -47,5 +48,9 @@ export const router = createBrowserRouter([
   {
     path: 'bookmarks',
     element: <Bookmarks/>
+  },
+  {
+    path: 'blog/:blogId',
+    element: <BlogDetails/>
   }
 ])
