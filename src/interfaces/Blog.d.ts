@@ -5,4 +5,6 @@ export interface Blog{
     author?: string,
     thumbnail?: string,
     blog?:Blog,
+    createdAt?:Date,
+    updatedAT?:Date,    
 }
