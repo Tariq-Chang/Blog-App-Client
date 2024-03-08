@@ -2,9 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { User } from "../../interfaces/User";
 import { Blog } from "../../interfaces/Blog";
 import { useEffect, useState } from "react";
-import axios from "axios";
-import myAxios from '../../api/axios'
-import Cookies from "js-cookie";
+import axios from '../../api/axios'
 import { FaHeart } from "react-icons/fa";
 import { saveBlogs } from "../../redux/features/blogSlice";
 import {useLocation} from 'react-router-dom';
@@ -15,7 +13,8 @@ function Card({ _id, title, author, thumbnail, blog }: Blog) {
   const dispatch = useDispatch();
 
   const [bookmark, setBookamark] = useState<boolean>(() => {
-    const result = savedBlogs.find((savedBlog:Blog) => savedBlog?._id!.toString() === _id?.toString())
+    const result = savedBlogs.find((savedBlog:Blog) => savedBlog?._id!.toString() === _id)
+    console.log("result", result);
     if(result) return true;
     else return false;
   });
@@ -25,15 +24,7 @@ function Card({ _id, title, author, thumbnail, blog }: Blog) {
   useEffect(() => {
     const getUser = async () => {
       try {
-        const token = Cookies.get("jwtToken");
-        const response = await axios.get(
-          `http://localhost:5000/api/v1/user/${author}`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        const response = await axios.get(`user/${author}`);
         setAuthorData(response?.data.user);
       } catch (error) {
         console.error(error);
@@ -43,27 +34,29 @@ function Card({ _id, title, author, thumbnail, blog }: Blog) {
   }, [bookmark]);
 
 
-  const bookmarkBlog = async () => {
+  const bookmarkBlog = async (e:any) => {
+    e.stopPropagation();
     if(bookmark === false){
       try {
-        const response = await myAxios.put(`blogs/saveBlog/${_id}`, {blogId: blog?._id});
-        const savedBlogsResponse = await myAxios.get('blogs/savedBlogs');
-        
+        const response = await axios.put(`blogs/saveBlog`, {blogId: blog?._id});
+        const {savedBlogs} = response.data.savedBlogs;
+
         setBookamark(!bookmark);
-        dispatch(saveBlogs(savedBlogsResponse.data[0].savedBlogs))
+        dispatch(saveBlogs(savedBlogs))
         return response;
       } catch (error) {
         console.error(error);
       }
     } else{
       try {
-        const response = await myAxios.delete(`/blogs/removeSavedBlog/${_id}`);
-        const savedBlogsResponse = await myAxios.get('blogs/savedBlogs');
+        const response = await axios.delete(`/blogs/removeSavedBlog/${_id}`);
+        const {savedBlogs} = response.data.savedBlogs;
         
         if(location.pathname === "/bookmarks") window.location.reload();
         
-        dispatch(saveBlogs(savedBlogsResponse.data[0].savedBlogs))
         setBookamark(!bookmark);
+        dispatch(saveBlogs(savedBlogs))
+        
         return response;
       } catch (error) {
         console.error(error);
