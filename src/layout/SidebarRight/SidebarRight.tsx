@@ -52,7 +52,7 @@ function SidebarRight() {
       <div
         className={`z-10 ${
           !showAvatarOptions && "hidden"
-        } bg-white divide-gray-100 rounded-lg shadow-lg w-56 mt-2 dark:bg-gray-700 dark:divide-gray-600`}
+        } absolute bg-white divide-gray-100 rounded-lg shadow-lg w-56 mt-10 dark:bg-gray-700 dark:divide-gray-600`}
       >
         <div className="px-4 py-3 text-sm text-gray-900 border-b dark:text-white">
           <div>{user.username}</div>
@@ -91,6 +91,7 @@ function SidebarRight() {
       <hr className="border-t border-t-gray-300 my-4"/>
       {/* UsersList */}
       <h3 className="text-3xl text-blue-600 pb-5">Users</h3>
+      <div className="overflow-auto  h-full">
       {
         usersList?.map((user:User) => {
           return (
@@ -110,6 +111,8 @@ function SidebarRight() {
           )
         })
       }
+
+      </div>
     </div>
   );
 }
