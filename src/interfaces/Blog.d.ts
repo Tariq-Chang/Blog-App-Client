@@ -4,7 +4,10 @@ export interface Blog{
     content?: string,
     author?: string,
     thumbnail?: string,
+    like?:string,
+    tags?:[string],
+    comments?:[string],
     blog?:Blog,
-    createdAt?:Date,
-    updatedAT?:Date,    
+    createdAt?:string,
+    updatedAT?:string,    
 }
