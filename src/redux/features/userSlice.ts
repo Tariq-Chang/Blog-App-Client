@@ -3,7 +3,9 @@ import { User } from "../../interfaces/User";
 import { InitialState } from "../../interfaces/InitialState";
 
 const initialState:InitialState = {
-    activeUser: <User>{}
+  activeUser: <User>{},
+  savedBlogs: [],
+  usersList:[]
 }
 
 const userSlice = createSlice({
@@ -14,7 +16,11 @@ const userSlice = createSlice({
         state.activeUser = action.payload;
       },
       setCurrentUserProfilePhoto: (state, action) => {
-        state.activeUser.profile.avatar = action.payload;
+        if(state.activeUser?.profile)
+          state.activeUser.profile.avatar = action.payload;
+      },
+      setAllUsers: (state, action) => {
+        state.usersList = action.payload;
       },
       logout: (state) => {
         state.activeUser = {}
@@ -22,6 +28,6 @@ const userSlice = createSlice({
     }
 })
 
-export const {setCurrentUser, setCurrentUserProfilePhoto,logout} = userSlice.actions;
+export const {setCurrentUser, setCurrentUserProfilePhoto,setAllUsers,logout} = userSlice.actions;
 export default userSlice.reducer;
 

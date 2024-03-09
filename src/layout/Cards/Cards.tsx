@@ -18,8 +18,8 @@ function Cards({ blogs }:CardsProps) {
       {
         (blogs?.map((blog: Blog) => {
           return (
-            <div onClick={() => handleNavigate(blog?._id)} className="cursor-pointer">
-              <Card key={blog._id} _id={blog._id} title={blog.title} author={blog.author} thumbnail={blog.thumbnail} blog={blog}/>
+            <div key={blog._id} onClick={() => handleNavigate(blog?._id)} className="cursor-pointer">
+              <Card _id={blog._id} title={blog.title} author={blog.author} thumbnail={blog.thumbnail} blog={blog}/>
             </div>
           )
         }))

@@ -5,4 +5,5 @@ export interface InitialState{
     blogs?: Blog[],
     myBlogs?: Blog[],
     savedBlogs: Blog[],
+    usersList: User[]
 }

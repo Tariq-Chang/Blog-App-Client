@@ -14,7 +14,6 @@ function Card({ _id, title, author, thumbnail, blog }: Blog) {
 
   const [bookmark, setBookamark] = useState<boolean>(() => {
     const result = savedBlogs.find((savedBlog:Blog) => savedBlog?._id!.toString() === _id)
-    console.log("result", result);
     if(result) return true;
     else return false;
   });
@@ -24,7 +23,7 @@ function Card({ _id, title, author, thumbnail, blog }: Blog) {
   useEffect(() => {
     const getUser = async () => {
       try {
-        const response = await axios.get(`user/${author}`);
+        const response = await axios.get(`users/${author}`);
         setAuthorData(response?.data.user);
       } catch (error) {
         console.error(error);
