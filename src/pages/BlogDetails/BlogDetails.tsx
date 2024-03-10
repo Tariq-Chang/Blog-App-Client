@@ -8,14 +8,14 @@ import { SlLike } from "react-icons/sl";
 import { AiOutlineComment } from "react-icons/ai";
 import { MdModeEdit } from "react-icons/md";
 import { useSelector } from "react-redux";
-
+import parse from 'html-react-parser';
 
 const BlogDetails = () => {
     const params = useParams();
     const [blog, setBlog] = useState<Blog | null>(null);
     const savedBlogs = useSelector((state: any) => state.blogs.savedBlogs);
 
-    const isBookmarked = savedBlogs.find((savedBlog:Blog) => savedBlog._id === blog?._id);
+    const isBookmarked = savedBlogs?.find((savedBlog:Blog) => savedBlog._id === blog?._id);
     const formatedCreatedAt = blog?.createdAt?.split('T')[0];
 
     const fetchBlog = async () => {
@@ -80,7 +80,7 @@ const BlogDetails = () => {
                 </div>
             </div>
             <h1 className="text-4xl my-6 text-gray-800">{blog?.title}</h1>
-            <p className="mt-10 pb-10">{blog?.content}</p>
+            <div className="mt-10 pb-10">{blog?.content && parse(blog?.content)}</div>
         </div>
     )
 }

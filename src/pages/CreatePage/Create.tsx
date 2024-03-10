@@ -1,12 +1,14 @@
 import { IoMdAddCircleOutline } from "react-icons/io";
 import { CiImageOn } from "react-icons/ci";
 import { CiVideoOn } from "react-icons/ci";
-import React, { ChangeEvent, useRef, useState } from "react";
+import { ChangeEvent, useRef, useState } from "react";
 import axios from "axios";
 import Cookies from 'js-cookie'
 import { setMyBlogs } from "../../redux/features/blogSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 
 export default function Create() {
     const dispatch = useDispatch();
@@ -41,17 +43,12 @@ export default function Create() {
         }
     }
 
-    const handleTextAreaChange = (event: React.ChangeEvent<HTMLTextAreaElement>):void => {
-        setPost({ ...post, content: event.target.value })
-        adjustTextareaHeight();
-    };
-
-    const adjustTextareaHeight = () => {
-        if (textAreaRef.current) {
-            textAreaRef.current.style.height = 'auto';
-            textAreaRef.current.style.height = `${textAreaRef.current.scrollHeight}px`;
-        }
-    };
+    // const adjustTextareaHeight = () => {
+    //     if (textAreaRef.current) {
+    //         textAreaRef.current.style.height = 'auto';
+    //         textAreaRef.current.style.height = `${textAreaRef.current.scrollHeight}px`;
+    //     }
+    // };
 
     const handleCreatePost = async () => {
         const token = Cookies.get('jwtToken');
@@ -64,6 +61,7 @@ export default function Create() {
         dispatch(setMyBlogs({ ...myBlogs, post }))
         navigate('/dashboard');
     }
+    console.log("post", post);
     return (
         <div className="w-[60%] mx-auto">
             {/* Thumbnail */}
@@ -95,19 +93,29 @@ export default function Create() {
                             <CiVideoOn className="text-2xl text-blue-600 cursor-pointer" />
                         </label>
                     </div>}
-
-                    <textarea id="content"
+                    <ReactQuill theme="snow"
+                    defaultValue={""}
+                        className="w-full"
                         value={post.content}
-                        ref={textAreaRef}
-                        onChange={handleTextAreaChange}
-                        placeholder="Share your thoughts"
-                        className="w-full overflow-hidden resize-none text-xl text-gray-600 ml-2 border-none placeholder:text-gray-400 focus:ring-0"></textarea>
+                        onChange={(content) => setPost({ ...post, content })} 
+                        placeholder="Start typing..."
+                        modules={{toolbar: {
+                            container: [
+                              [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+                              ['bold', 'italic', 'underline', "strike"],
+                              [{ 'list': 'ordered' }, { 'list': 'bullet' },
+                              { 'indent': '-1' }, { 'indent': '+1' }],
+                              ['image', "link",],
+                              [{ 'color': ['#000000', '#e60000', '#ff9900', '#ffff00', '#008a00', '#0066cc', '#9933ff', '#ffffff', '#facccc', '#ffebcc', '#ffffcc', '#cce8cc', '#cce0f5', '#ebd6ff', '#bbbbbb', '#f06666', '#ffc266', '#ffff66', '#66b966', '#66a3e0', '#c285ff', '#888888', '#a10000', '#b26b00', '#b2b200', '#006100', '#0047b2', '#6b24b2', '#444444', '#5c0000', '#663d00', '#666600', '#003700', '#002966', '#3d1466'] }]
+                            ],
+                          },}}
+                     />
                 </div>
                 <button
                     type="submit"
                     onClick={handleCreatePost}
                     disabled={!post.thumbnail}
-                    className="absolute right-0 mt-8 bg-gray-800 text-white px-4 py-2 rounded-lg drop-shadow-lg w-32 hover:bg-gray-900 disabled:bg-gray-600">Post</button>
+                    className="absolute right-0 mt-16 bg-gray-800 text-white px-4 py-2 rounded-lg drop-shadow-lg w-32 hover:bg-gray-900 disabled:bg-gray-600">Post</button>
             </div>
         </div>
     )
