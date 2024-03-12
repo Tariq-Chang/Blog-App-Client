@@ -63,6 +63,14 @@ function Card({ _id, title, author, thumbnail, blog }: Blog) {
     }
 
   }
+
+  const formatTitle = (title: string) => {
+    if(title && title.length > 15){
+      return title.slice(0,15)
+    }
+    return title
+  }
+
   return (
     <div className="w-100">
       <article className="relative overflow-hidden rounded-lg shadow transition hover:shadow-lg">
@@ -81,7 +89,9 @@ function Card({ _id, title, author, thumbnail, blog }: Blog) {
             <time className="block text-xs text-white/90">10th Oct 2022</time>
 
             <a href="#">
-              <h3 className="mt-0.5 text-lg text-white">{title}</h3>
+              <h3 className="mt-0.5 text-lg text-white">
+                {title && formatTitle(title).length >= 15 ? <div>{formatTitle(title)}... <button className="underline text-gray-200">see more</button></div> : title && formatTitle(title)}
+              </h3>
             </a>
 
             <div className="flex items-center gap-4 mt-2">
