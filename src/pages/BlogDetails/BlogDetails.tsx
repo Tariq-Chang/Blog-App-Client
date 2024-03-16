@@ -7,15 +7,22 @@ import { FaHeart, FaUser } from "react-icons/fa";
 import { SlLike } from "react-icons/sl";
 import { AiOutlineComment } from "react-icons/ai";
 import { MdModeEdit } from "react-icons/md";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import parse from 'html-react-parser';
+import { saveBlogs } from "../../redux/features/blogSlice";
 
 const BlogDetails = () => {
     const params = useParams();
     const [blog, setBlog] = useState<Blog | null>(null);
     const savedBlogs = useSelector((state: any) => state.blogs.savedBlogs);
-
-    const isBookmarked = savedBlogs?.find((savedBlog: Blog) => savedBlog._id === blog?._id);
+    const dispatch = useDispatch();
+    const [bookmark, setBookamark] = useState<boolean>(() => {
+        const result = savedBlogs.find((savedBlog: Blog) => savedBlog?._id!.toString() === params.blogId)
+        if (result) return true;
+        else return false;
+    });
+    
+    // const isBookmarked = savedBlogs?.find((savedBlog: Blog) => savedBlog._id === blog?._id);
     const formatedCreatedAt = blog?.createdAt?.split('T')[0];
 
     const fetchBlog = async () => {
@@ -27,11 +34,41 @@ const BlogDetails = () => {
         fetchBlog();
     }, [])
 
+    const bookmarkBlog = async (e:any) => {
+        e.stopPropagation();
+        if(bookmark === false){
+          try {
+            const response = await axios.put(`blogs/saveBlog`, {blogId: blog?._id});
+            const {savedBlogs} = response.data.savedBlogs;
+    
+            setBookamark(!bookmark);
+            dispatch(saveBlogs(savedBlogs))
+            return response;
+          } catch (error) {
+            console.error(error);
+          }
+        } else{
+          try {
+            const response = await axios.delete(`/blogs/removeSavedBlog/${params.blogId}`);
+            const {savedBlogs} = response.data.savedBlogs;
+            
+            if(location.pathname === "/bookmarks") window.location.reload();
+            
+            setBookamark(!bookmark);
+            dispatch(saveBlogs(savedBlogs))
+            
+            return response;
+          } catch (error) {
+            console.error(error);
+          }
+        }
+    
+      }
+
     const len = (value: number) => {
         let count = 0;
         while(Math.floor(value) > 0){
             value = value / 10;
-            console.log("value", value);
             count++
         }
         return count;
@@ -47,7 +84,6 @@ const BlogDetails = () => {
                 count = (Number(count) / 1000_000_000).toFixed(1) + 'B'
             }
         }else if(typeof count === "number"){
-            console.log("length",len(count))
             if (len(count) >= 4 && len(count) < 7) {
                 count = (count / 1000).toFixed(1) + 'K';
             } else if (len(count) >= 7 && len(count) < 10) {
@@ -93,7 +129,7 @@ const BlogDetails = () => {
                         <MdModeEdit />
                         <p className="ml-2 relative text-gray-800">Edit</p>
                     </div>
-                    <div className={`${isBookmarked && "text-blue-600"} flex items-center mt-16 cursor-pointer hover:text-blue-600`}>
+                    <div className={`${bookmark && "text-blue-600"} flex items-center mt-16 cursor-pointer hover:text-blue-600`} onClick={bookmarkBlog}>
                         <FaHeart className="text-xl" />
                         <p className="ml-2 relative text-gray-800">Save</p>
                     </div>
