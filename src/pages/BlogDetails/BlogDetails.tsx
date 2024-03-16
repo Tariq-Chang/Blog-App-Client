@@ -15,7 +15,7 @@ const BlogDetails = () => {
     const [blog, setBlog] = useState<Blog | null>(null);
     const savedBlogs = useSelector((state: any) => state.blogs.savedBlogs);
 
-    const isBookmarked = savedBlogs?.find((savedBlog:Blog) => savedBlog._id === blog?._id);
+    const isBookmarked = savedBlogs?.find((savedBlog: Blog) => savedBlog._id === blog?._id);
     const formatedCreatedAt = blog?.createdAt?.split('T')[0];
 
     const fetchBlog = async () => {
@@ -27,16 +27,36 @@ const BlogDetails = () => {
         fetchBlog();
     }, [])
 
-    // formated likes and comments
-    const formatedNumbers = (likes:string) => {
-        if(likes?.length >= 4 && likes?.length < 7){
-            likes = (Number(likes)/1000).toFixed(1) + 'K';
-        }else if(likes?.length >= 7 && likes?.length < 10){
-            likes = (Number(likes)/1000_000).toFixed(1) + 'M';
-        }else if(likes?.length >= 10){
-            likes = (Number(likes)/1000_000_000).toFixed(1) + 'B'
+    const len = (value: number) => {
+        let count = 0;
+        while(Math.floor(value) > 0){
+            value = value / 10;
+            console.log("value", value);
+            count++
         }
-        return likes;
+        return count;
+    }
+    // formated likes and comments
+    const formatedNumbers = (count: number | string) => {
+        if(typeof count === "string"){
+            if (count?.length >= 4 && count?.length < 7) {
+                count = (Number(count) / 1000).toFixed(1) + 'K';
+            } else if (count?.length >= 7 && count?.length < 10) {
+                count = (Number(count) / 1000_000).toFixed(1) + 'M';
+            } else if (count?.length >= 10) {
+                count = (Number(count) / 1000_000_000).toFixed(1) + 'B'
+            }
+        }else if(typeof count === "number"){
+            console.log("length",len(count))
+            if (len(count) >= 4 && len(count) < 7) {
+                count = (count / 1000).toFixed(1) + 'K';
+            } else if (len(count) >= 7 && len(count) < 10) {
+                count = (count / 1000_000).toFixed(1) + 'M';
+            } else if (len(count) >= 10) {
+                count = (count / 1000_000_000).toFixed(1) + 'B'
+            }
+        }
+        return count;
     }
     return (
         <div className="w-[95%] mx-auto mt-3 md:w-[85%] lg:w-[75%] xl:w-[65%]">
