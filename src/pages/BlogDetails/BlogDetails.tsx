@@ -4,12 +4,12 @@ import { useEffect, useState } from "react";
 import { Blog } from "../../interfaces/Blog";
 import { CiCalendarDate } from "react-icons/ci";
 import { FaHeart, FaUser } from "react-icons/fa";
-import { SlLike } from "react-icons/sl";
 import { AiOutlineComment } from "react-icons/ai";
 import { MdModeEdit } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
 import parse from 'html-react-parser';
 import { saveBlogs } from "../../redux/features/blogSlice";
+import { BiLike, BiSolidLike } from "react-icons/bi";
 
 const BlogDetails = () => {
     const params = useParams();
@@ -21,8 +21,8 @@ const BlogDetails = () => {
         if (result) return true;
         else return false;
     });
+    const [isLiked, setIsLiked] = useState<boolean>(false);
     
-    // const isBookmarked = savedBlogs?.find((savedBlog: Blog) => savedBlog._id === blog?._id);
     const formatedCreatedAt = blog?.createdAt?.split('T')[0];
 
     const fetchBlog = async () => {
@@ -33,6 +33,26 @@ const BlogDetails = () => {
     useEffect(() => {
         fetchBlog();
     }, [])
+
+    const likeBlog = async () => {
+        if(isLiked === false){
+            try {
+                const response = await axios.patch(`blogs/${params.blogId}/incrementLikes`);
+                setIsLiked(true);
+                console.log("response", response);
+            } catch (error) {
+                console.log("error", error);
+            }
+        }else{
+            try {
+                const response = await axios.patch(`blogs/${params.blogId}/decrementLikes`);
+                setIsLiked(false);
+                console.log("response", response);
+            } catch (error) {
+                console.log("error", error);
+            }
+        }
+    }
 
     const bookmarkBlog = async (e:any) => {
         e.stopPropagation();
@@ -109,8 +129,8 @@ const BlogDetails = () => {
             </div>
             <div className="blog__actions flex justify-between items-center ">
                 <div className="blog__actionsLeft flex gap-x-6">
-                    <div className={`flex items-center mt-16 cursor-pointer hover:text-blue-600`}>
-                        <SlLike />
+                    <div className={`${isLiked && 'text-blue-600'} flex items-center mt-16 cursor-pointer hover:text-blue-600`} onClick={likeBlog}>
+                        {isLiked ? <BiSolidLike/> : <BiLike />}
                         <p className="ml-2 relative text-gray-800">
                             <span className="text-sm text-blue-600 absolute -top-4">{blog?.like && formatedNumbers(blog?.like)}</span>
                             Like
