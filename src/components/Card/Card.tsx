@@ -11,10 +11,19 @@ function Card({ _id, title, author, thumbnail, blog }: Blog) {
   const location = useLocation();
   const savedBlogs = useSelector((state:any) => state.blogs.savedBlogs)
   const dispatch = useDispatch();
+  const [isShortTitle, setIsShortTitle] = useState(() => {
+    if (title && title.length >= 15) {
+      return true;
+    } else {
+      return false;
+    }
+  });
 
   const [bookmark, setBookamark] = useState<boolean>(() => {
-    const result = savedBlogs.find((savedBlog:Blog) => savedBlog?._id!.toString() === _id)
-    if(result) return true;
+    const result = savedBlogs.find(
+      (savedBlog: Blog) => savedBlog?._id!.toString() === _id
+    );
+    if (result) return true;
     else return false;
   });
 
@@ -32,7 +41,7 @@ function Card({ _id, title, author, thumbnail, blog }: Blog) {
     getUser();
   }, [bookmark]);
 
-
+  
   const bookmarkBlog = async (e:any) => {
     e.stopPropagation();
     if(bookmark === false){
@@ -50,26 +59,27 @@ function Card({ _id, title, author, thumbnail, blog }: Blog) {
       try {
         const response = await axios.delete(`/blogs/removeSavedBlog/${_id}`);
         const {savedBlogs} = response.data.savedBlogs;
-        
+
         if(location.pathname === "/bookmarks") window.location.reload();
-        
+
         setBookamark(!bookmark);
         dispatch(saveBlogs(savedBlogs))
-        
+
         return response;
       } catch (error) {
         console.error(error);
       }
     }
-
+  
   }
 
   const formatTitle = (title: string) => {
-    if(title && title.length > 15){
-      return title.slice(0,15)
+    if (title.length >= 15) {
+      return title.slice(0, 15);
     }
-    return title
-  }
+    setIsShortTitle(false);
+    return title;
+  };
 
   return (
     <div className="w-100">
@@ -82,18 +92,42 @@ function Card({ _id, title, author, thumbnail, blog }: Blog) {
 
         <div className="relative bg-gradient-to-t from-gray-900/50 to-gray-900/25 pt-16 sm:pt-28 lg:pt-40">
           <FaHeart
-            className={`absolute top-0 left-0 text-2xl ${bookmark ? "text-red-500" : "text-gray-600"} m-4 cursor-pointer sm:m-6`}
+            className={`absolute top-0 left-0 text-2xl ${
+              bookmark ? "text-blue-600" : "text-gray-600"
+            } m-4 cursor-pointer sm:m-6`}
             onClick={bookmarkBlog}
           />
           <div className="p-4 sm:p-6">
             <time className="block text-xs text-white/90">10th Oct 2022</time>
-
-            <a href="#">
-              <h3 className="mt-0.5 text-lg text-white">
-                {title && formatTitle(title).length >= 15 ? <div>{formatTitle(title)}... <button className="underline text-gray-200">see more</button></div> : title && formatTitle(title)}
-              </h3>
-            </a>
-
+            <h3 className="mt-0.5 text-lg text-white">
+              {isShortTitle ? (
+                <div>
+                  {title && formatTitle(title)}...{" "}
+                  <button
+                    className="underline text-gray-200 ml-2 hover:text-blue-300"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setIsShortTitle(false)
+                    }}
+                  >
+                    see more
+                  </button>
+                </div>
+              ) : (
+                <div>
+                  {title}
+                  <button
+                    className="underline text-gray-200 ml-2 hover:text-blue-300"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setIsShortTitle(true)
+                    }}
+                  >
+                    see less
+                  </button>
+                </div>
+              )}
+            </h3>
             <div className="flex items-center gap-4 mt-2">
               <img
                 className="w-10 h-10 rounded-full"
