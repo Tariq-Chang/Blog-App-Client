@@ -32,22 +32,20 @@ const BlogDetails = () => {
 
     useEffect(() => {
         fetchBlog();
-    }, [])
+    }, [isLiked])
 
     const likeBlog = async () => {
         if(isLiked === false){
             try {
-                const response = await axios.patch(`blogs/${params.blogId}/incrementLikes`);
+                await axios.patch(`blogs/${params.blogId}/incrementLikes`);
                 setIsLiked(true);
-                console.log("response", response);
             } catch (error) {
                 console.log("error", error);
             }
         }else{
             try {
-                const response = await axios.patch(`blogs/${params.blogId}/decrementLikes`);
+                await axios.patch(`blogs/${params.blogId}/decrementLikes`);
                 setIsLiked(false);
-                console.log("response", response);
             } catch (error) {
                 console.log("error", error);
             }
