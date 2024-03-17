@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import parse from 'html-react-parser';
 import { saveBlogs } from "../../redux/features/blogSlice";
 import { BiLike, BiSolidLike } from "react-icons/bi";
+import { setCurrentUser } from "../../redux/features/userSlice";
 
 const BlogDetails = () => {
     const params = useParams();
@@ -21,10 +22,15 @@ const BlogDetails = () => {
         if (result) return true;
         else return false;
     });
-    const [isLiked, setIsLiked] = useState<boolean>(false);
-    
-    const formatedCreatedAt = blog?.createdAt?.split('T')[0];
+    const activeUser = useSelector((state:any) => state.user.activeUser);
+    const [isLiked, setIsLiked] = useState<boolean>(() => {
+        if(activeUser.likedBlogs.includes(params.blogId)){
+            return true;
+        }else return false;
+    });
 
+    const formatedCreatedAt = blog?.createdAt?.split('T')[0];
+    
     const fetchBlog = async () => {
         const response = await axios.get(`/blogs/${params.blogId}`)
         setBlog(response.data);
@@ -32,19 +38,21 @@ const BlogDetails = () => {
 
     useEffect(() => {
         fetchBlog();
-    }, [isLiked])
+    }, [isLiked, activeUser])
 
     const likeBlog = async () => {
         if(isLiked === false){
             try {
-                await axios.patch(`blogs/${params.blogId}/incrementLikes`);
+                const response = await axios.patch(`blogs/${params.blogId}/incrementLikes`);
+                dispatch(setCurrentUser(response.data.updatedUser))
                 setIsLiked(true);
             } catch (error) {
                 console.log("error", error);
             }
         }else{
             try {
-                await axios.patch(`blogs/${params.blogId}/decrementLikes`);
+                const response = await axios.patch(`blogs/${params.blogId}/decrementLikes`);
+                dispatch(setCurrentUser(response.data.updatedUser))
                 setIsLiked(false);
             } catch (error) {
                 console.log("error", error);
@@ -115,7 +123,7 @@ const BlogDetails = () => {
     return (
         <div className="w-[95%] mx-auto mt-3 md:w-[85%] lg:w-[75%] xl:w-[65%]">
             <div className="content relative">
-                <img src={blog?.thumbnail} alt="" className="rounded-md w-full h-[60vh] object-cover " />
+                <img src={blog?.thumbnail} alt="" className="rounded-md w-full border bg-gradient-to-r from-indigo-500 to-blue-400 h-[40vh] object-contain" />
                 <div className="absolute flex items-center -bottom-8 right-0">
                     <CiCalendarDate className="text-xl text-gray-800" />
                     <p className="ml-2 text-sm text-gray-600">{formatedCreatedAt ? new Date(formatedCreatedAt).toDateString() : "uknown"}</p>
@@ -153,8 +161,9 @@ const BlogDetails = () => {
                     </div>
                 </div>
             </div>
+            <hr className="mt-5"/>
             <h1 className="text-4xl my-6 text-gray-800">{blog?.title}</h1>
-            <div className="mt-10 pb-10">{blog?.content && parse(blog?.content)}</div>
+            <div className="mt-10 pb-10 border-b border-gray-300 mb-5">{blog?.content && parse(blog?.content)}</div>
         </div>
     )
 }
