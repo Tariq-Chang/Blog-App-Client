@@ -143,13 +143,13 @@ const BlogDetails = () => {
                             Like
                         </p>
                     </div>
-                    <div className="flex items-center mt-16 cursor-pointer hover:text-blue-600">
+                    <a href='#commentSection' className="flex items-center mt-16 cursor-pointer hover:text-blue-600">
                         <AiOutlineComment className="text-xl" />
                         <p className="ml-2 relative text-gray-800">
                             <span className="text-sm text-blue-600 absolute -top-4">{blog?.comments && formatedNumbers(blog?.comments?.length.toString())}</span>
                             Comments
                         </p>
-                    </div>
+                    </a>
                 </div>
                 <div className="blog__actionsRight flex gap-x-6">
                     <div className="flex items-center mt-16 cursor-pointer hover:text-blue-600">
