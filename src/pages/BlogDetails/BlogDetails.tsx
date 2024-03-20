@@ -11,6 +11,7 @@ import parse from 'html-react-parser';
 import { saveBlogs } from "../../redux/features/blogSlice";
 import { BiLike, BiSolidLike } from "react-icons/bi";
 import { setCurrentUser } from "../../redux/features/userSlice";
+import Comments from "../../layout/Comments/Comments";
 
 const BlogDetails = () => {
     const params = useParams();
@@ -164,6 +165,7 @@ const BlogDetails = () => {
             <hr className="mt-5"/>
             <h1 className="text-4xl my-6 text-gray-800">{blog?.title}</h1>
             <div className="mt-10 pb-10 border-b border-gray-300 mb-5">{blog?.content && parse(blog?.content)}</div>
+            <Comments/>
         </div>
     )
 }
