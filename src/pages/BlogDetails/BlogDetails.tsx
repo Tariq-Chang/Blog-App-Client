@@ -14,18 +14,18 @@ import { setCurrentUser } from "../../redux/features/userSlice";
 import Comments from "../../layout/Comments/Comments";
 
 const BlogDetails = () => {
-    const params = useParams();
+    const {blogId} = useParams();
     const [blog, setBlog] = useState<Blog | null>(null);
     const savedBlogs = useSelector((state: any) => state.blogs.savedBlogs);
     const dispatch = useDispatch();
     const [bookmark, setBookamark] = useState<boolean>(() => {
-        const result = savedBlogs.find((savedBlog: Blog) => savedBlog?._id!.toString() === params.blogId)
+        const result = savedBlogs.find((savedBlog: Blog) => savedBlog?._id!.toString() === blogId)
         if (result) return true;
         else return false;
     });
     const activeUser = useSelector((state:any) => state.user.activeUser);
     const [isLiked, setIsLiked] = useState<boolean>(() => {
-        if(activeUser.likedBlogs.includes(params.blogId)){
+        if(activeUser.likedBlogs.includes(blogId)){
             return true;
         }else return false;
     });
@@ -33,7 +33,7 @@ const BlogDetails = () => {
     const formatedCreatedAt = blog?.createdAt?.split('T')[0];
     
     const fetchBlog = async () => {
-        const response = await axios.get(`/blogs/${params.blogId}`)
+        const response = await axios.get(`/blogs/${blogId}`)
         setBlog(response.data);
     }
 
@@ -44,7 +44,7 @@ const BlogDetails = () => {
     const likeBlog = async () => {
         if(isLiked === false){
             try {
-                const response = await axios.patch(`blogs/${params.blogId}/incrementLikes`);
+                const response = await axios.patch(`blogs/${blogId}/incrementLikes`);
                 dispatch(setCurrentUser(response.data.updatedUser))
                 setIsLiked(true);
             } catch (error) {
@@ -52,7 +52,7 @@ const BlogDetails = () => {
             }
         }else{
             try {
-                const response = await axios.patch(`blogs/${params.blogId}/decrementLikes`);
+                const response = await axios.patch(`blogs/${blogId}/decrementLikes`);
                 dispatch(setCurrentUser(response.data.updatedUser))
                 setIsLiked(false);
             } catch (error) {
@@ -76,7 +76,7 @@ const BlogDetails = () => {
           }
         } else{
           try {
-            const response = await axios.delete(`/blogs/removeSavedBlog/${params.blogId}`);
+            const response = await axios.delete(`/blogs/removeSavedBlog/${blogId}`);
             const {savedBlogs} = response.data.savedBlogs;
             
             if(location.pathname === "/bookmarks") window.location.reload();
@@ -165,7 +165,7 @@ const BlogDetails = () => {
             <hr className="mt-5"/>
             <h1 className="text-4xl my-6 text-gray-800">{blog?.title}</h1>
             <div className="mt-10 pb-10 border-b border-gray-300 mb-5">{blog?.content && parse(blog?.content)}</div>
-            <Comments/>
+            <Comments blogId={blogId}/>
         </div>
     )
 }
