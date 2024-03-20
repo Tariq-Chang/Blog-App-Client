@@ -23,7 +23,7 @@ function Comments({blogId}: {blogId: string | undefined}) {
             Discussion (20)
           </h2>
         </div>
-        <CreateComment />
+        <CreateComment blogId={blogId}/>
         <div>
             {
                 comments?.map((commentData: Comment) => <CommentCard key={commentData._id} comment={commentData}/>)
