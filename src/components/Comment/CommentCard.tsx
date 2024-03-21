@@ -3,9 +3,10 @@ import Dropdown from "../../layout/Comments/Dropdown";
 
 interface Props {
   comment: Comment;
+  blogId: string | undefined;
 }
 
-function CommentCard({ comment }: Props) {
+function CommentCard({ comment, blogId }: Props) {
   const {user, comment:commentValue} = comment;
 
   const formatedCreatedAt = comment?.createdAt?.split('T')[0]
@@ -34,7 +35,7 @@ function CommentCard({ comment }: Props) {
           </div>
           
         </div>
-        <Dropdown />
+        <Dropdown comment={comment} blogId={blogId}/>
       </footer>
       <p className="text-gray-500 dark:text-gray-400">{commentValue}</p>
       <div className="flex items-center mt-4 space-x-4">
