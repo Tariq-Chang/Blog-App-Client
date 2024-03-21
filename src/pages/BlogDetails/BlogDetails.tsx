@@ -5,15 +5,18 @@ import { Blog } from "../../interfaces/Blog";
 import { CiCalendarDate } from "react-icons/ci";
 import { FaHeart, FaUser } from "react-icons/fa";
 import { AiOutlineComment } from "react-icons/ai";
-import { MdModeEdit } from "react-icons/md";
+import { MdDelete, MdModeEdit } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
 import parse from 'html-react-parser';
 import { saveBlogs } from "../../redux/features/blogSlice";
 import { BiLike, BiSolidLike } from "react-icons/bi";
 import { setCurrentUser } from "../../redux/features/userSlice";
 import Comments from "../../layout/Comments/Comments";
+import Modal from "../../components/Modal/Modal";
+import { ToastContainer } from "react-toastify";
 
 const BlogDetails = () => {
+    const [isShow, setIsShow] = useState<boolean>(false);
     const {blogId} = useParams();
     const [blog, setBlog] = useState<Blog | null>(null);
     const savedBlogs = useSelector((state: any) => state.blogs.savedBlogs);
@@ -122,52 +125,101 @@ const BlogDetails = () => {
         return count;
     }
     return (
-        <div className="w-[95%] mx-auto mt-3 md:w-[85%] lg:w-[75%] xl:w-[65%]">
-            <div className="content relative">
-                <img src={blog?.thumbnail} alt="" className="rounded-md w-full border bg-gradient-to-r from-indigo-500 to-blue-400 h-[40vh] object-contain" />
-                <div className="absolute flex items-center -bottom-8 right-0">
-                    <CiCalendarDate className="text-xl text-gray-800" />
-                    <p className="ml-2 text-sm text-gray-600">{formatedCreatedAt ? new Date(formatedCreatedAt).toDateString() : "uknown"}</p>
-                </div>
-                <div className="absolute flex items-center -bottom-8 left-0">
-                    <FaUser className="text-md text-gray-800" />
-                    <p className="ml-2 text-sm text-gray-600">John Doe</p>
-                </div>
-            </div>
-            <div className="blog__actions flex justify-between items-center ">
-                <div className="blog__actionsLeft flex gap-x-6">
-                    <div className={`${isLiked && 'text-blue-600'} flex items-center mt-16 cursor-pointer hover:text-blue-600`} onClick={likeBlog}>
-                        {isLiked ? <BiSolidLike/> : <BiLike />}
-                        <p className="ml-2 relative text-gray-800">
-                            <span className="text-sm text-blue-600 absolute -top-4">{blog?.like && formatedNumbers(blog?.like)}</span>
-                            Like
-                        </p>
-                    </div>
-                    <a href='#commentSection' className="flex items-center mt-16 cursor-pointer hover:text-blue-600">
-                        <AiOutlineComment className="text-xl" />
-                        <p className="ml-2 relative text-gray-800">
-                            <span className="text-sm text-blue-600 absolute -top-4">{blog?.comments && formatedNumbers(blog?.comments?.length.toString())}</span>
-                            Comments
-                        </p>
-                    </a>
-                </div>
-                <div className="blog__actionsRight flex gap-x-6">
-                    <div className="flex items-center mt-16 cursor-pointer hover:text-blue-600">
-                        <MdModeEdit />
-                        <p className="ml-2 relative text-gray-800">Edit</p>
-                    </div>
-                    <div className={`${bookmark && "text-blue-600"} flex items-center mt-16 cursor-pointer hover:text-blue-600`} onClick={bookmarkBlog}>
-                        <FaHeart className="text-xl" />
-                        <p className="ml-2 relative text-gray-800">Save</p>
-                    </div>
-                </div>
-            </div>
-            <hr className="mt-5"/>
-            <h1 className="text-4xl my-6 text-gray-800">{blog?.title}</h1>
-            <div className="mt-10 pb-10 border-b border-gray-300 mb-5">{blog?.content && parse(blog?.content)}</div>
-            <Comments blogId={blogId}/>
+      <div className="w-[95%] mx-auto mt-3 md:w-[85%] lg:w-[75%] xl:w-[65%]">
+        <ToastContainer
+          position="top-center"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="dark"
+        />
+        <div className="content relative">
+          <img
+            src={blog?.thumbnail}
+            alt=""
+            className="rounded-md w-full border bg-gradient-to-r from-indigo-500 to-blue-400 h-[40vh] object-contain"
+          />
+          <div className="absolute flex items-center -bottom-8 right-0">
+            <CiCalendarDate className="text-xl text-gray-800" />
+            <p className="ml-2 text-sm text-gray-600">
+              {formatedCreatedAt
+                ? new Date(formatedCreatedAt).toDateString()
+                : "uknown"}
+            </p>
+          </div>
+          <div className="absolute flex items-center -bottom-8 left-0">
+            <FaUser className="text-md text-gray-800" />
+            <p className="ml-2 text-sm text-gray-600">John Doe</p>
+          </div>
         </div>
-    )
+        <div className="blog__actions flex justify-between items-center ">
+          <div className="blog__actionsLeft flex gap-x-6">
+            <div
+              className={`${
+                isLiked && "text-blue-600"
+              } flex items-center mt-16 cursor-pointer hover:text-blue-600`}
+              onClick={likeBlog}
+            >
+              {isLiked ? <BiSolidLike /> : <BiLike />}
+              <p className="ml-2 relative text-gray-800">
+                <span className="text-sm text-blue-600 absolute -top-4">
+                  {blog?.like && formatedNumbers(blog?.like)}
+                </span>
+                Like
+              </p>
+            </div>
+            <a
+              href="#commentSection"
+              className="flex items-center mt-16 cursor-pointer hover:text-blue-600"
+            >
+              <AiOutlineComment className="text-xl" />
+              <p className="ml-2 relative text-gray-800">
+                <span className="text-sm text-blue-600 absolute -top-4">
+                  {blog?.comments &&
+                    formatedNumbers(blog?.comments?.length.toString())}
+                </span>
+                Comments
+              </p>
+            </a>
+          </div>
+          {blogId && isShow && (
+            <Modal isShow={isShow} setIsShow={setIsShow} blogId={blogId} />
+          )}
+          <div
+            className="blog__actionsRight flex gap-x-6"
+            onClick={() => setIsShow(!isShow)}
+          >
+            <div className="flex items-center mt-16 cursor-pointer hover:text-blue-600">
+              <MdDelete className="text-red-500" />
+              <p className="ml-2 relative text-gray-800">Delete</p>
+            </div>
+            <div className="flex items-center mt-16 cursor-pointer hover:text-blue-600">
+              <MdModeEdit />
+              <p className="ml-2 relative text-gray-800">Edit</p>
+            </div>
+            <div
+              className={`${
+                bookmark && "text-blue-600"
+              } flex items-center mt-16 cursor-pointer hover:text-blue-600`}
+              onClick={bookmarkBlog}
+            >
+              <FaHeart className="text-xl" />
+              <p className="ml-2 relative text-gray-800">Save</p>
+            </div>
+          </div>
+        </div>
+        <hr className="mt-5" />
+        <h1 className="text-4xl my-6 text-gray-800">{blog?.title}</h1>
+        <div className="mt-10 pb-10 border-b border-gray-300 mb-5">
+          {blog?.content && parse(blog?.content)}
+        </div>
+        <Comments blogId={blogId} />
+      </div>
+    );
 }
 
 export default BlogDetails
