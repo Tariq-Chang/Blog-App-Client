@@ -1,12 +1,11 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "../../api/axios";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { useDispatch, useSelector } from "react-redux";
 
 function Modal({isShow, setIsShow, blogId}:{isShow: boolean, setIsShow:any, blogId: string}) {
+  const queryClient = useQueryClient();
   const navigate = useNavigate();
-  const dispatch = useDispatch();
   const deleteBlogMutation = useMutation({
     mutationFn: async (blogId: string) => {
       const response = axios.delete(`/blogs/delete/${blogId}`);
@@ -35,6 +34,8 @@ function Modal({isShow, setIsShow, blogId}:{isShow: boolean, setIsShow:any, blog
         progress: undefined,
         theme: "dark",
       });
+      queryClient.invalidateQueries({queryKey: ['allBlogs']})
+      queryClient.invalidateQueries({queryKey: ['myBlogs']})
     },
   });
   const handleDelete = () => {
