@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Comment } from "../../interfaces/Comment";
 import axios from '../../api/axios'
 import { toast } from "react-toastify";
+import { MdDeleteOutline, MdEdit } from "react-icons/md";
 
 interface Props{
     comment?: Comment,
@@ -73,14 +74,14 @@ function Dropdown({comment, blogId}:Props) {
         {isOpen && (
           <div className="absolute right-0 mt-2 w-36 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600">
             <div className="py-1 text-sm text-gray-700 dark:text-gray-200">
-              <div className="w-full px-4 py-2 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
-                Edit
+              <div className="w-full flex items-center gap-x-2 px-4 py-2 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+                <MdEdit /><span>Edit</span>
               </div>
               <div
                 onClick={handleRemoveComment}
-                className="w-full px-4 py-2 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                className="w-full flex items-center gap-x-2 px-4 py-2 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
               >
-                Remove
+                <MdDeleteOutline /><span>Remove</span>
               </div>
             </div>
           </div>
