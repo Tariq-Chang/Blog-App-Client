@@ -4,16 +4,19 @@ import { useEffect } from "react";
 import Cookies from "js-cookie";
 import Sidebar from "./layout/Sidebar/Sidebar";
 import Header from "./layout/Header/Header";
-import { useGetAllBlogsMutation, useGetMyBlogsMutation } from "./hooks/useBlogsMutation";
 import SidebarRight from "./layout/SidebarRight/SidebarRight";
 import { ToastContainer, toast } from "react-toastify";
 import { useDispatch } from "react-redux";
 import { setAllBlogs, setMyBlogs } from "./redux/features/blogSlice";
+import { useQuery } from "@tanstack/react-query";
+import { getAllBlogs, getUserBlogs } from "./api/blogsApi/blogsApi";
 function App() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const getAllBlogsMutation = useGetAllBlogsMutation();
-  const getMyBlogsMutation = useGetMyBlogsMutation();
+
+  const {data: allBlogs} = useQuery({queryKey: ['allBlogs'], queryFn:getAllBlogs})
+  const {data: myBlogs} = useQuery({queryKey: ['myBlogs'], queryFn:getUserBlogs})
+
   useEffect(() => {
     
     const fetchData = async () => {
@@ -21,9 +24,7 @@ function App() {
       if (!token) {
         navigate("/login");
       }
-      const allBlogs = await getAllBlogsMutation.mutateAsync();
-      const myBlogs = await getMyBlogsMutation.mutateAsync();
-      
+            
       dispatch(setAllBlogs(allBlogs));
       dispatch(setMyBlogs(myBlogs));
 
@@ -43,7 +44,7 @@ function App() {
       localStorage.setItem('isLoggedIn', JSON.stringify(true));
     };
     fetchData();
-  }, []);
+  }, [allBlogs, myBlogs]);
   
   
   return (
