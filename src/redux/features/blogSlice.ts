@@ -6,7 +6,8 @@ import { InitialState } from "../../interfaces/InitialState";
 const initialState:InitialState = {
     blogs: <Blog[]>{},
     myBlogs: <Blog[]>{},
-    savedBlogs: <Blog[]>[]
+    savedBlogs: <Blog[]>[],
+    usersList: []
 }
 
 const blogSlice = createSlice({
