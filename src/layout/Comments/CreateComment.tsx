@@ -1,4 +1,4 @@
-import { useMutation} from "@tanstack/react-query";
+import { useMutation, useQueryClient} from "@tanstack/react-query";
 import axios from "../../api/axios";
 import { useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
@@ -8,7 +8,7 @@ interface Props {
 }
 function CreateComment({blogId}: Props) {
   const [commentData, setCommentData] = useState<string>("");
-  
+  const queryClient = useQueryClient()
   const addCommentMutation = useMutation({
     mutationFn: async (comment: string) => {
       const response = await axios.post(`/blogs/${blogId}/comment/add`, {
@@ -39,6 +39,7 @@ function CreateComment({blogId}: Props) {
         progress: undefined,
         theme: "dark",
       });
+      queryClient.invalidateQueries({queryKey: ['comments']})
       setCommentData('')
     },
   });
